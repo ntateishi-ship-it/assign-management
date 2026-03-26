@@ -386,7 +386,6 @@
         </div>
         <div class="form-group"><label>開始日</label><input type="date" id="p-start" onchange="updateProjectWeekTable()"></div>
         <div class="form-group"><label>終了予定日</label><input type="date" id="p-end" onchange="updateProjectWeekTable()"></div>
-        <div class="form-group"><label>売上（万円/月）</label><input type="number" id="p-revenue" min="0" placeholder="例: 150"></div>
         <div class="form-group full">
           <label>週次必要工数</label>
           <div id="p-week-container">
@@ -847,7 +846,6 @@ function openProjectModal(id=null) {
   document.getElementById('p-status').value=p?.status||'受注済み';
   document.getElementById('p-start').value=p?.startDate||'';
   document.getElementById('p-end').value=p?.endDate||'';
-  document.getElementById('p-revenue').value=p?.revenue||'';
   document.getElementById('p-notes').value=p?.notes||'';
   buildSkillRows('p-domain-skills', DOMAINS, p?.requiredDomains||{}, '以上');
   buildSkillRows('p-main-skills', SKILLS, p?.requiredSkills||{}, '以上');
@@ -878,7 +876,6 @@ function saveProject() {
     status: document.getElementById('p-status').value,
     startDate: document.getElementById('p-start').value,
     endDate: document.getElementById('p-end').value,
-    revenue: document.getElementById('p-revenue').value,
     weeklyHours: collectProjectWeekHours(),
     requiredDomains: collectSkills('p-domain-skills'),
     requiredSkills: collectSkills('p-main-skills'),
@@ -940,7 +937,6 @@ function renderProjects() {
         <div class="info-grid" style="margin-bottom:10px">
           <div class="info-item"><span class="info-label">期間</span><span class="info-value">${fmtDate(p.startDate)} 〜 ${fmtDate(p.endDate)}</span></div>
           <div class="info-item"><span class="info-label">今週必要工数</span><span class="info-value">${req?req+'h/週':'—'}</span></div>
-          ${p.revenue?`<div class="info-item"><span class="info-label">売上</span><span class="info-value">${fmtNum(p.revenue,'万円/月')}</span></div>`:''}
         </div>
         ${hasReqSkills?`<div style="margin-bottom:10px"><div class="info-label" style="margin-bottom:4px">必要スキル</div><div class="tags">${reqSkillTagsHTML(p.requiredDomains,p.requiredSkills)}</div></div>`:''}
         ${req>0?`<div style="margin-bottom:10px">
