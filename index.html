@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>アサイン管理 | キビテク</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --primary: #1a56db; --primary-dark: #1e429f;
@@ -249,6 +250,25 @@
   .mt-2{margin-top:8px;}
   .flex{display:flex;} .items-center{align-items:center;} .gap-2{gap:8px;}
 
+  /* 権限制御: 未ログイン時は admin-only 要素を非表示 */
+  body:not(.is-admin) .admin-only { display: none !important; }
+
+  /* Header auth area */
+  .header-auth{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .header-auth-label{font-size:12px;color:rgba(255,255,255,.9);font-weight:500;white-space:nowrap;}
+  .btn-header{padding:5px 13px;border-radius:6px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.15);color:white;cursor:pointer;font-size:12px;font-weight:500;transition:background .15s;white-space:nowrap;}
+  .btn-header:hover{background:rgba(255,255,255,.25);}
+  .btn-header-logout{border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.08);}
+
+  /* Loading overlay */
+  #loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,.85);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+  .spinner{width:38px;height:38px;border:3px solid var(--gray-200);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading-msg{font-size:13px;color:var(--gray-600);}
+
+  /* Error toast */
+  #error-toast{display:none;position:fixed;bottom:20px;right:20px;z-index:9998;background:#1f2937;color:white;padding:12px 18px;border-radius:8px;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.3);max-width:380px;line-height:1.5;}
+
   @media(max-width:640px){
     .main{padding:16px;}
     .cards-grid{grid-template-columns:1fr;}
@@ -266,6 +286,10 @@
   </div>
   <div class="divider"></div>
   <span class="header-title">エンジニア アサイン管理システム</span>
+  <div class="header-auth">
+    <span id="auth-label" class="header-auth-label"></span>
+    <button id="auth-btn" class="btn-header" onclick="onAuthBtnClick()">管理者ログイン</button>
+  </div>
 </header>
 
 <div class="tabs-bar">
@@ -304,7 +328,7 @@
 <div id="view-projects" class="view">
   <div class="section-header">
     <div><div class="section-title">案件管理</div><div class="section-subtitle">案件の登録・管理とエンジニアアサイン状況</div></div>
-    <button class="btn btn-primary" onclick="openProjectModal()">＋ 新規案件登録</button>
+    <button class="btn btn-primary admin-only" onclick="openProjectModal()">＋ 新規案件登録</button>
   </div>
   <div class="filter-bar">
     <input type="text" id="project-search" placeholder="🔍 案件名・クライアントで検索" oninput="renderProjects()">
@@ -323,7 +347,7 @@
 <div id="view-engineers" class="view">
   <div class="section-header">
     <div><div class="section-title">エンジニア管理</div><div class="section-subtitle">エンジニアの登録・管理とアサイン状況・稼働率</div></div>
-    <button class="btn btn-primary" onclick="openEngineerModal()">＋ 新規エンジニア登録</button>
+    <button class="btn btn-primary admin-only" onclick="openEngineerModal()">＋ 新規エンジニア登録</button>
   </div>
   <div class="filter-bar">
     <input type="text" id="engineer-search" placeholder="🔍 氏名・スキルで検索" oninput="renderEngineers()">
@@ -342,7 +366,7 @@
 <div id="view-assigns" class="view">
   <div class="section-header">
     <div><div class="section-title">アサイン管理</div><div class="section-subtitle">案件とエンジニアの紐付けを管理します</div></div>
-    <button class="btn btn-primary" onclick="openAssignModal()">＋ アサイン登録</button>
+    <button class="btn btn-primary admin-only" onclick="openAssignModal()">＋ アサイン登録</button>
   </div>
   <div class="divider-label">稼働負荷サマリー（今週）</div>
   <div id="workload-summary" class="workload-summary"></div>
@@ -405,7 +429,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('project-modal')">キャンセル</button>
-      <button class="btn btn-primary" onclick="saveProject()">保存</button>
+      <button class="btn btn-primary admin-only" onclick="saveProject()">保存</button>
     </div>
   </div>
 </div>
@@ -444,7 +468,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('engineer-modal')">キャンセル</button>
-      <button class="btn btn-primary" onclick="saveEngineer()">保存</button>
+      <button class="btn btn-primary admin-only" onclick="saveEngineer()">保存</button>
     </div>
   </div>
 </div>
@@ -479,7 +503,7 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('assign-modal')">キャンセル</button>
-      <button class="btn btn-primary" onclick="saveAssign()">保存</button>
+      <button class="btn btn-primary admin-only" onclick="saveAssign()">保存</button>
     </div>
   </div>
 </div>
@@ -517,16 +541,208 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('quick-assign-modal')">キャンセル</button>
-      <button class="btn btn-primary" onclick="confirmQuickAssign()">アサイン登録</button>
+      <button class="btn btn-primary admin-only" onclick="confirmQuickAssign()">アサイン登録</button>
     </div>
   </div>
 </div>
+
+<!-- ===== 管理者ログインモーダル ===== -->
+<div class="modal-overlay" id="login-modal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <div class="modal-title">🔐 管理者ログイン</div>
+      <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid cols-1">
+        <div class="form-group">
+          <label>パスワード</label>
+          <input type="password" id="login-pw" placeholder="管理者パスワードを入力"
+                 onkeydown="if(event.key==='Enter') doLogin()">
+        </div>
+        <div id="login-error" style="display:none;color:var(--danger);font-size:12px;padding:4px 0"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('login-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="doLogin()">ログイン</button>
+    </div>
+  </div>
+</div>
+
+<!-- ローディングオーバーレイ -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <div id="loading-msg">読み込み中...</div>
+</div>
+
+<!-- エラートースト -->
+<div id="error-toast"></div>
 
 <script>
 // ========== CONSTANTS ==========
 const DOMAINS = ['産業用マニピュレータ','産業用モバイルロボット','研究用マニピュレータ','研究用モバイルロボット','Webフロントエンド','Webバックエンド'];
 const SKILLS = ['分散コンピューティング（ROSなど）','シーケンス制御','画像処理','3次元コンピュータビジョン','運動学','各種通信','機械設計','リアルタイム制御','統計学','Webデザイン','Webアーキテクチャ','電気回路','空圧回路'];
 const LEVELS = ['G1','G2','G3','G4','G5'];
+
+// ========== SUPABASE ==========
+const SUPABASE_URL = 'https://iazqnnpfvuklyzxrtqrl.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhenFubnBmdnVrbHl6eHJ0cXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1MTcxOTUsImV4cCI6MjA5MDA5MzE5NX0.pwhMORHwk8P70M3OfTEn2sra08EPBMAXDaIBkaiu8lc';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ===== インメモリキャッシュ（render関数はここを参照する）=====
+const cache = { projects: [], engineers: [], assigns: [] };
+
+// ===== ローディング / エラー UI =====
+function showLoading(msg = '保存中...') {
+  const el = document.getElementById('loading-overlay');
+  document.getElementById('loading-msg').textContent = msg;
+  el.style.display = 'flex';
+}
+function hideLoading() {
+  document.getElementById('loading-overlay').style.display = 'none';
+}
+function showError(msg) {
+  const el = document.getElementById('error-toast');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 6000);
+}
+
+// ========== AUTH ==========
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function isAdmin() { return sessionStorage.getItem('kibitech_admin') === '1'; }
+function updateAuthUI() {
+  const admin = isAdmin();
+  document.body.classList.toggle('is-admin', admin);
+  const label = document.getElementById('auth-label');
+  const btn   = document.getElementById('auth-btn');
+  if (admin) {
+    label.textContent = '🔓 管理者モード中';
+    btn.textContent   = 'ログアウト';
+    btn.classList.add('btn-header-logout');
+  } else {
+    label.textContent = '';
+    btn.textContent   = '管理者ログイン';
+    btn.classList.remove('btn-header-logout');
+  }
+}
+function onAuthBtnClick() {
+  if (isAdmin()) {
+    if (confirm('ログアウトしますか？')) {
+      sessionStorage.removeItem('kibitech_admin');
+      updateAuthUI();
+    }
+  } else {
+    document.getElementById('login-pw').value = '';
+    document.getElementById('login-error').style.display = 'none';
+    openModal('login-modal');
+  }
+}
+async function doLogin() {
+  const pw = document.getElementById('login-pw').value;
+  if (!pw) return;
+  const hash = await sha256(pw);
+  const {data, error} = await sb.from('admins').select('id').eq('password_hash', hash).maybeSingle();
+  if (error || !data) {
+    const el = document.getElementById('login-error');
+    el.textContent = 'パスワードが正しくありません';
+    el.style.display = 'block';
+    return;
+  }
+  sessionStorage.setItem('kibitech_admin', '1');
+  closeModal('login-modal');
+  updateAuthUI();
+}
+async function ensureDefaultAdmin() {
+  const {data} = await sb.from('admins').select('id').limit(1);
+  if (!data || data.length === 0) {
+    const hash = await sha256('admin1234');
+    await sb.from('admins').insert({password_hash: hash});
+  }
+}
+
+// ===== フィールドマッピング =====
+// engineers: { id, name, employment_type, hourly_rate, weekly_hours, skills(jsonb), notes }
+//   skills jsonb 構造: { domains: {分野名: レベル}, main: {スキル名: レベル} }
+//   weekly_hours = 稼働可能工数（整数）
+function rowToEngineer(r) {
+  const sk = r.skills || {};
+  return {
+    id: r.id,
+    name: r.name || '',
+    employmentType: r.employment_type || '',
+    availableHours: r.weekly_hours || 0,
+    hourlyRate: r.hourly_rate || '',
+    domainSkills: sk.domains || {},
+    mainSkills: sk.main || {},
+    notes: r.notes || ''
+  };
+}
+function engineerToRow(e) {
+  return {
+    name: e.name,
+    employment_type: e.employmentType || '',
+    weekly_hours: Number(e.availableHours) || 0,
+    hourly_rate: e.hourlyRate ? Number(e.hourlyRate) : null,
+    skills: { domains: e.domainSkills || {}, main: e.mainSkills || {} },
+    notes: e.notes || ''
+  };
+}
+
+// projects: { id, name, client, status, start_date, end_date, weekly_required_hours(jsonb), required_skills(jsonb), notes }
+//   weekly_required_hours jsonb 構造: { "YYYY-MM-DD": 時間数 }
+//   required_skills jsonb 構造: { domains: {分野名: レベル}, main: {スキル名: レベル} }
+function rowToProject(r) {
+  const rsk = r.required_skills || {};
+  return {
+    id: r.id,
+    name: r.name || '',
+    client: r.client || '',
+    status: r.status || '',
+    startDate: r.start_date || '',
+    endDate: r.end_date || '',
+    weeklyHours: r.weekly_required_hours || {},
+    requiredDomains: rsk.domains || {},
+    requiredSkills: rsk.main || {},
+    notes: r.notes || ''
+  };
+}
+function projectToRow(p) {
+  return {
+    name: p.name,
+    client: p.client,
+    status: p.status,
+    start_date: p.startDate || null,
+    end_date: p.endDate || null,
+    weekly_required_hours: p.weeklyHours || {},
+    required_skills: { domains: p.requiredDomains || {}, main: p.requiredSkills || {} },
+    notes: p.notes || ''
+  };
+}
+
+// assignments: { id, engineer_id, project_id, role, weekly_hours(jsonb) }
+//   weekly_hours jsonb 構造: { "YYYY-MM-DD": 時間数 }
+function rowToAssign(r) {
+  return {
+    id: r.id,
+    projectId: r.project_id,
+    engineerId: r.engineer_id,
+    role: r.role || '',
+    weeklyHours: r.weekly_hours || {}
+  };
+}
+function assignToRow(a) {
+  return {
+    project_id: a.projectId,
+    engineer_id: a.engineerId,
+    role: a.role || '',
+    weekly_hours: a.weeklyHours || {}
+  };
+}
 
 // ========== DB ==========
 const DB = {
@@ -774,7 +990,7 @@ function collectProjectWeekHours() {
 
 // ========== DASHBOARD ==========
 function renderDashboard() {
-  const projects=DB.get('projects'), engineers=DB.get('engineers'), assigns=DB.get('assigns');
+  const projects=cache.projects, engineers=cache.engineers, assigns=cache.assigns;
   const wk=currentWeekKey();
   const juchu=projects.filter(p=>p.status==='受注済み');
   const mikomi=projects.filter(p=>p.status==='受注見込み');
@@ -840,7 +1056,7 @@ function renderDashboard() {
 function openProjectModal(id=null) {
   editingProjectId=id;
   document.getElementById('project-modal-title').textContent=id?'案件編集':'案件登録';
-  const p=id?DB.get('projects').find(x=>x.id===id):null;
+  const p=id?cache.projects.find(x=>x.id===id):null;
   document.getElementById('p-name').value=p?.name||'';
   document.getElementById('p-client').value=p?.client||'';
   document.getElementById('p-status').value=p?.status||'受注済み';
@@ -865,12 +1081,11 @@ function openProjectModal(id=null) {
   }
   openModal('project-modal');
 }
-function saveProject() {
+async function saveProject() {
   const name=document.getElementById('p-name').value.trim();
   const client=document.getElementById('p-client').value.trim();
   if (!name) { alert('案件名を入力してください'); return; }
   if (!client) { alert('クライアント名を入力してください'); return; }
-  const projects=DB.get('projects');
   const data={
     name, client,
     status: document.getElementById('p-status').value,
@@ -881,32 +1096,48 @@ function saveProject() {
     requiredSkills: collectSkills('p-main-skills'),
     notes: document.getElementById('p-notes').value,
   };
-  if (editingProjectId) {
-    const idx=projects.findIndex(x=>x.id===editingProjectId);
-    projects[idx]={...projects[idx],...data};
-  } else { data.id=DB.nextId('projects'); projects.push(data); }
-  DB.set('projects',projects);
   closeModal('project-modal');
+  showLoading('保存中...');
+  try {
+    if (editingProjectId) {
+      const {error}=await sb.from('projects').update(projectToRow(data)).eq('id',editingProjectId);
+      if (error) throw error;
+      const idx=cache.projects.findIndex(x=>x.id===editingProjectId);
+      if (idx>=0) cache.projects[idx]={...cache.projects[idx],...data};
+    } else {
+      const {data:row,error}=await sb.from('projects').insert(projectToRow(data)).select('id').single();
+      if (error) throw error;
+      cache.projects.push({...data,id:row.id});
+    }
+  } catch(e) { showError('案件の保存に失敗しました: '+(e.message||e)); }
+  finally { hideLoading(); }
   renderProjects();
 }
-function deleteProject(id) {
+async function deleteProject(id) {
   if (!confirm('この案件を削除しますか？アサイン情報も削除されます。')) return;
-  DB.set('projects',DB.get('projects').filter(p=>p.id!==id));
-  DB.set('assigns',DB.get('assigns').filter(a=>a.projectId!==id));
+  showLoading('削除中...');
+  try {
+    await sb.from('assignments').delete().eq('project_id',id);
+    const {error}=await sb.from('projects').delete().eq('id',id);
+    if (error) throw error;
+    cache.projects=cache.projects.filter(p=>p.id!==id);
+    cache.assigns=cache.assigns.filter(a=>a.projectId!==id);
+  } catch(e) { showError('案件の削除に失敗しました: '+(e.message||e)); }
+  finally { hideLoading(); }
   renderProjects();
 }
 function renderProjects() {
   const grid=document.getElementById('projects-grid');
   const search=document.getElementById('project-search').value.toLowerCase();
   const sf=document.getElementById('project-status-filter').value;
-  let projects=DB.get('projects');
+  let projects=cache.projects.slice();
   if (search) projects=projects.filter(p=>p.name.toLowerCase().includes(search)||p.client.toLowerCase().includes(search));
   if (sf) projects=projects.filter(p=>p.status===sf);
   if (!projects.length) {
     grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">案件が登録されていません</div></div></div>`;
     return;
   }
-  const assigns=DB.get('assigns'), engineers=DB.get('engineers'), wk=currentWeekKey();
+  const assigns=cache.assigns, engineers=cache.engineers, wk=currentWeekKey();
   grid.innerHTML=projects.map(p=>{
     const req=getProjectWeekRequired(p,wk), asgn=getProjectWeekAssigned(p.id,wk,assigns);
     const ratio=req>0?Math.min(asgn/req,1):1, pClass=progressClass(asgn,req), barW=Math.min(ratio*100,100);
@@ -928,7 +1159,7 @@ function renderProjects() {
           </div>
           <div style="font-size:12px;color:var(--gray-500)">🏢 ${esc(p.client)}</div>
         </div>
-        <div class="actions" style="flex-shrink:0">
+        <div class="actions admin-only" style="flex-shrink:0">
           <button class="btn btn-secondary btn-sm" onclick="openProjectModal(${p.id})">編集</button>
           <button class="btn btn-danger btn-sm" onclick="deleteProject(${p.id})">削除</button>
         </div>
@@ -953,7 +1184,7 @@ function renderProjects() {
 
 // ========== CANDIDATE MATCHING ==========
 function openCandidateModal(projectId) {
-  const projects=DB.get('projects'), engineers=DB.get('engineers'), assigns=DB.get('assigns');
+  const projects=cache.projects, engineers=cache.engineers, assigns=cache.assigns;
   const p=projects.find(x=>x.id===projectId);
   if (!p) return;
   const wk=currentWeekKey();
@@ -1003,7 +1234,7 @@ function openCandidateModal(projectId) {
         <span class="${freeClass}" style="font-size:12px">${freeLabel}</span>
         ${e.isAssigned
           ?`<button class="btn btn-secondary btn-sm" disabled style="opacity:.5">アサイン済</button>`
-          :`<button class="btn btn-primary btn-sm" onclick="openQuickAssign(${p.id},${e.id},'${esc(e.name)}')">アサイン</button>`}
+          :`<button class="btn btn-primary btn-sm admin-only" onclick="openQuickAssign(${p.id},${e.id},'${esc(e.name)}')">アサイン</button>`}
       </div>
     </div>`;
   }).join(''):'<div class="empty-state" style="padding:24px"><div class="empty-state-text">エンジニアが登録されていません</div></div>';
@@ -1012,26 +1243,36 @@ function openCandidateModal(projectId) {
 }
 function openQuickAssign(pid,eid,eName) {
   qaProjectId=pid; qaEngineerId=eid;
-  const p=DB.get('projects').find(x=>x.id===pid);
+  const p=cache.projects.find(x=>x.id===pid);
   document.getElementById('qa-title').textContent=`アサイン登録 — ${eName}`;
   document.getElementById('qa-info').innerHTML=`👤 <strong>${esc(eName)}</strong> を 📋 <strong>${p?esc(p.name):''}</strong> にアサイン`;
   document.getElementById('qa-hours').value='';
   closeModal('candidate-modal');
   openModal('quick-assign-modal');
 }
-function confirmQuickAssign() {
+async function confirmQuickAssign() {
   const hours=Number(document.getElementById('qa-hours').value), role=document.getElementById('qa-role').value;
   if (!hours||hours<=0) { alert('工数を入力してください'); return; }
-  const proj=DB.get('projects').find(p=>p.id===qaProjectId);
-  const assigns=DB.get('assigns');
-  const ex=assigns.find(a=>a.projectId===qaProjectId&&a.engineerId===qaEngineerId);
+  const proj=cache.projects.find(p=>p.id===qaProjectId);
   const weeklyHours={};
   if (proj&&proj.startDate&&proj.endDate) getWeeksBetween(proj.startDate,proj.endDate).forEach(w=>{ weeklyHours[w]=hours; });
   else weeklyHours[currentWeekKey()]=hours;
-  if (ex) { if(!confirm('既にアサインされています。上書きしますか？')) return; ex.weeklyHours=weeklyHours; ex.role=role; }
-  else assigns.push({id:DB.nextId('assigns'),projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours});
-  DB.set('assigns',assigns);
+  const ex=cache.assigns.find(a=>a.projectId===qaProjectId&&a.engineerId===qaEngineerId);
   closeModal('quick-assign-modal');
+  showLoading('保存中...');
+  try {
+    if (ex) {
+      if (!confirm('既にアサインされています。上書きしますか？')) { hideLoading(); return; }
+      const {error}=await sb.from('assignments').update({weekly_hours:weeklyHours,role}).eq('id',ex.id);
+      if (error) throw error;
+      ex.weeklyHours=weeklyHours; ex.role=role;
+    } else {
+      const {data:row,error}=await sb.from('assignments').insert(assignToRow({projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours})).select('id').single();
+      if (error) throw error;
+      cache.assigns.push({id:row.id,projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours});
+    }
+  } catch(e) { showError('アサインの保存に失敗しました: '+(e.message||e)); }
+  finally { hideLoading(); }
   renderProjects();
 }
 
@@ -1045,7 +1286,7 @@ function updateMonthlyCalc() {
 function openEngineerModal(id=null) {
   editingEngineerId=id;
   document.getElementById('engineer-modal-title').textContent=id?'エンジニア編集':'エンジニア登録';
-  const e=id?DB.get('engineers').find(x=>x.id===id):null;
+  const e=id?cache.engineers.find(x=>x.id===id):null;
   document.getElementById('e-name').value=e?.name||'';
   document.getElementById('e-type').value=e?.employmentType||'正社員・契約社員・パートタイム';
   document.getElementById('e-available').value=e?.availableHours||'';
@@ -1056,39 +1297,56 @@ function openEngineerModal(id=null) {
   updateMonthlyCalc();
   openModal('engineer-modal');
 }
-function saveEngineer() {
+async function saveEngineer() {
   const name=document.getElementById('e-name').value.trim();
   const available=document.getElementById('e-available').value;
   if (!name) { alert('氏名を入力してください'); return; }
   if (!available) { alert('稼働可能工数を入力してください'); return; }
-  const engineers=DB.get('engineers');
   const data={
     name, employmentType:document.getElementById('e-type').value,
     availableHours:Number(available), hourlyRate:document.getElementById('e-hourly').value,
     domainSkills:collectSkills('e-domain-skills'), mainSkills:collectSkills('e-main-skills'),
     notes:document.getElementById('e-notes').value,
   };
-  if (editingEngineerId) { const idx=engineers.findIndex(x=>x.id===editingEngineerId); engineers[idx]={...engineers[idx],...data}; }
-  else { data.id=DB.nextId('engineers'); engineers.push(data); }
-  DB.set('engineers',engineers);
   closeModal('engineer-modal');
+  showLoading('保存中...');
+  try {
+    if (editingEngineerId) {
+      const {error}=await sb.from('engineers').update(engineerToRow(data)).eq('id',editingEngineerId);
+      if (error) throw error;
+      const idx=cache.engineers.findIndex(x=>x.id===editingEngineerId);
+      if (idx>=0) cache.engineers[idx]={...cache.engineers[idx],...data};
+    } else {
+      const {data:row,error}=await sb.from('engineers').insert(engineerToRow(data)).select('id').single();
+      if (error) throw error;
+      cache.engineers.push({...data,id:row.id});
+    }
+  } catch(e) { showError('エンジニアの保存に失敗しました: '+(e.message||e)); }
+  finally { hideLoading(); }
   renderEngineers();
 }
-function deleteEngineer(id) {
+async function deleteEngineer(id) {
   if (!confirm('このエンジニアを削除しますか？アサイン情報も削除されます。')) return;
-  DB.set('engineers',DB.get('engineers').filter(e=>e.id!==id));
-  DB.set('assigns',DB.get('assigns').filter(a=>a.engineerId!==id));
+  showLoading('削除中...');
+  try {
+    await sb.from('assignments').delete().eq('engineer_id',id);
+    const {error}=await sb.from('engineers').delete().eq('id',id);
+    if (error) throw error;
+    cache.engineers=cache.engineers.filter(e=>e.id!==id);
+    cache.assigns=cache.assigns.filter(a=>a.engineerId!==id);
+  } catch(e) { showError('エンジニアの削除に失敗しました: '+(e.message||e)); }
+  finally { hideLoading(); }
   renderEngineers();
 }
 function renderEngineers() {
   const grid=document.getElementById('engineers-grid');
   const search=document.getElementById('engineer-search').value.toLowerCase();
   const tf=document.getElementById('engineer-type-filter').value;
-  let engineers=DB.get('engineers');
+  let engineers=cache.engineers.slice();
   if (search) engineers=engineers.filter(e=>e.name.toLowerCase().includes(search)||(e.skills||'').toLowerCase().includes(search)||Object.keys(e.domainSkills||{}).some(k=>k.toLowerCase().includes(search))||Object.keys(e.mainSkills||{}).some(k=>k.toLowerCase().includes(search)));
   if (tf) engineers=engineers.filter(e=>e.employmentType===tf);
   if (!engineers.length) { grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-text">エンジニアが登録されていません</div></div></div>`; return; }
-  const assigns=DB.get('assigns'), projects=DB.get('projects'), wk=currentWeekKey();
+  const assigns=cache.assigns, projects=cache.projects, wk=currentWeekKey();
   grid.innerHTML=engineers.map(e=>{
     const asgn=getEngineerWeekAssigned(e.id,wk,assigns), avl=Number(e.availableHours||0);
     const isOver=asgn>avl, wClass=workloadClass(asgn,avl), ratio=avl>0?Math.min(asgn/avl,1.2):0;
@@ -1111,7 +1369,7 @@ function renderEngineers() {
           </div>
           <div style="font-size:12px;color:var(--gray-500)">稼働可能: ${avl}h/週${monthly?' / 月額: '+(monthly/10000).toFixed(1)+'万円':''}</div>
         </div>
-        <div class="actions" style="flex-shrink:0">
+        <div class="actions admin-only" style="flex-shrink:0">
           <button class="btn btn-secondary btn-sm" onclick="openEngineerModal(${e.id})">編集</button>
           <button class="btn btn-danger btn-sm" onclick="deleteEngineer(${e.id})">削除</button>
         </div>
@@ -1151,7 +1409,7 @@ function openAssignModal(id=null) {
   editingAssignId=id;
   document.getElementById('assign-modal-title').textContent=id?'アサイン編集':'アサイン登録';
   // Populate selects
-  const projects=DB.get('projects'), engineers=DB.get('engineers');
+  const projects=cache.projects, engineers=cache.engineers;
   document.getElementById('a-project').innerHTML='<option value="">案件を選択...</option>'+projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
   document.getElementById('a-engineer').innerHTML='<option value="">エンジニアを選択...</option>'+engineers.map(e=>`<option value="${e.id}">${esc(e.name)} (${e.availableHours}h/週)</option>`).join('');
   const weekOpts=generateWeekOptions('');
@@ -1162,7 +1420,7 @@ function openAssignModal(id=null) {
   document.getElementById('a-week-table-wrap').style.display='none';
   document.getElementById('a-week-rows').innerHTML='';
   if (id) {
-    const a=DB.get('assigns').find(x=>x.id===id);
+    const a=cache.assigns.find(x=>x.id===id);
     if (a) {
       document.getElementById('a-project').value=a.projectId;
       document.getElementById('a-engineer').value=a.engineerId;
@@ -1211,7 +1469,7 @@ function collectAssignWeekHours() {
   else { weeks.forEach(w=>{ map[w]=defH; }); }
   return map;
 }
-function saveAssign() {
+async function saveAssign() {
   const pid=Number(document.getElementById('a-project').value);
   const eid=Number(document.getElementById('a-engineer').value);
   const role=document.getElementById('a-role').value;
@@ -1223,26 +1481,44 @@ function saveAssign() {
   if (!defH) { alert('工数を入力してください'); return; }
   if (sk>ek) { alert('終了週は開始週以降を選択してください'); return; }
   const weeklyHours=collectAssignWeekHours();
-  const assigns=DB.get('assigns');
-  if (editingAssignId) {
-    const idx=assigns.findIndex(x=>x.id===editingAssignId);
-    assigns[idx]={...assigns[idx],projectId:pid,engineerId:eid,role,weeklyHours};
-  } else {
-    const ex=assigns.find(a=>a.projectId===pid&&a.engineerId===eid);
-    if (ex) { if(!confirm('既にアサインされています。上書きしますか？'))return; ex.weeklyHours=weeklyHours; ex.role=role; }
-    else assigns.push({id:DB.nextId('assigns'),projectId:pid,engineerId:eid,role,weeklyHours});
-  }
-  DB.set('assigns',assigns);
   closeModal('assign-modal');
+  showLoading('保存中...');
+  try {
+    if (editingAssignId) {
+      const {error}=await sb.from('assignments').update({project_id:pid,engineer_id:eid,role,weekly_hours:weeklyHours}).eq('id',editingAssignId);
+      if (error) throw error;
+      const idx=cache.assigns.findIndex(x=>x.id===editingAssignId);
+      if (idx>=0) cache.assigns[idx]={...cache.assigns[idx],projectId:pid,engineerId:eid,role,weeklyHours};
+    } else {
+      const ex=cache.assigns.find(a=>a.projectId===pid&&a.engineerId===eid);
+      if (ex) {
+        if (!confirm('既にアサインされています。上書きしますか？')) { hideLoading(); return; }
+        const {error}=await sb.from('assignments').update({role,weekly_hours:weeklyHours}).eq('id',ex.id);
+        if (error) throw error;
+        ex.weeklyHours=weeklyHours; ex.role=role;
+      } else {
+        const {data:row,error}=await sb.from('assignments').insert(assignToRow({projectId:pid,engineerId:eid,role,weeklyHours})).select('id').single();
+        if (error) throw error;
+        cache.assigns.push({id:row.id,projectId:pid,engineerId:eid,role,weeklyHours});
+      }
+    }
+  } catch(e) { showError('アサインの保存に失敗しました: '+(e.message||e)); }
+  finally { hideLoading(); }
   renderAssigns();
 }
-function removeAssign(id) {
+async function removeAssign(id) {
   if (!confirm('このアサインを解除しますか？')) return;
-  DB.set('assigns',DB.get('assigns').filter(a=>a.id!==id));
+  showLoading('削除中...');
+  try {
+    const {error}=await sb.from('assignments').delete().eq('id',id);
+    if (error) throw error;
+    cache.assigns=cache.assigns.filter(a=>a.id!==id);
+  } catch(e) { showError('アサインの解除に失敗しました: '+(e.message||e)); }
+  finally { hideLoading(); }
   renderAssigns();
 }
 function renderAssigns() {
-  const assigns=DB.get('assigns'), engineers=DB.get('engineers'), wk=currentWeekKey();
+  const assigns=cache.assigns, engineers=cache.engineers, wk=currentWeekKey();
   // Workload summary
   const sumEl=document.getElementById('workload-summary');
   sumEl.innerHTML=engineers.length?engineers.map(e=>{
@@ -1257,7 +1533,7 @@ function renderAssigns() {
   renderAssignTable();
 }
 function renderAssignTable() {
-  const assigns=DB.get('assigns'), projects=DB.get('projects'), engineers=DB.get('engineers');
+  const assigns=cache.assigns, projects=cache.projects, engineers=cache.engineers;
   const thead=document.getElementById('assign-thead'), tbody=document.getElementById('assign-tbody');
   if (!assigns.length) {
     thead.innerHTML=''; tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-400)">アサインが登録されていません</td></tr>`; return;
@@ -1276,7 +1552,7 @@ function renderAssignTable() {
           <td>👤 ${esc(eng.name)}</td>
           <td>${a.role?`<span class="badge" style="background:#eff6ff;color:#1d4ed8">${esc(a.role)}</span>`:'—'}</td>
           <td><div style="font-size:12px">${assignWeekRange(a.weeklyHours)}</div><div style="font-weight:600;color:var(--primary)">${summarizeWeekHours(a.weeklyHours)}</div></td>
-          <td><div class="actions"><button class="btn btn-secondary btn-sm" onclick="openAssignModal(${a.id})">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></div></td>
+          <td><div class="actions admin-only"><button class="btn btn-secondary btn-sm" onclick="openAssignModal(${a.id})">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></div></td>
         </tr>`;
       });
     });
@@ -1296,7 +1572,7 @@ function renderAssignTable() {
           <td>${statusBadge(proj.status)}</td>
           <td>${a.role?`<span class="badge" style="background:#eff6ff;color:#1d4ed8">${esc(a.role)}</span>`:'—'}</td>
           <td><div style="font-size:12px">${assignWeekRange(a.weeklyHours)}</div><div style="font-weight:600;color:var(--primary)">${summarizeWeekHours(a.weeklyHours)}</div></td>
-          <td><div class="actions"><button class="btn btn-secondary btn-sm" onclick="openAssignModal(${a.id})">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></div></td>
+          <td><div class="actions admin-only"><button class="btn btn-secondary btn-sm" onclick="openAssignModal(${a.id})">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></div></td>
         </tr>`;
       });
     });
@@ -1314,7 +1590,7 @@ function setTlAxis(ax) {
 }
 function renderTimeline() {
   const weeks=getTimelineWeeks(), curWk=currentWeekKey();
-  const assigns=DB.get('assigns'), projects=DB.get('projects'), engineers=DB.get('engineers');
+  const assigns=cache.assigns, projects=cache.projects, engineers=cache.engineers;
   const c=document.getElementById('timeline-content');
   const headerCols=weeks.map(w=>`<th class="tl-week-th${w===curWk?' tl-current-th':''}">${formatWeekHdr(w)}<br><span style="font-size:10px;font-weight:400">(月)</span></th>`).join('');
 
@@ -1367,9 +1643,102 @@ function renderTimeline() {
   }
 }
 
+// ========== DATA LOAD ==========
+async function loadAll() {
+  showLoading('データを読み込み中...');
+  try {
+    const [pRes,eRes,aRes] = await Promise.all([
+      sb.from('projects').select('*').order('id'),
+      sb.from('engineers').select('*').order('id'),
+      sb.from('assignments').select('*').order('id'),
+    ]);
+    if (pRes.error) throw pRes.error;
+    if (eRes.error) throw eRes.error;
+    if (aRes.error) throw aRes.error;
+    cache.projects  = (pRes.data||[]).map(rowToProject);
+    cache.engineers = (eRes.data||[]).map(rowToEngineer);
+    cache.assigns   = (aRes.data||[]).map(rowToAssign);
+  } catch(e) {
+    showError('データの読み込みに失敗しました: '+(e.message||e));
+  } finally {
+    hideLoading();
+  }
+}
+
+// ========== LOCALSTORAGE MIGRATION ==========
+async function migrateFromLocalStorage() {
+  if (localStorage.getItem('kibitech_migrated_supabase')) return;
+
+  // 旧localStorage から読み込み（v1.0形式）
+  let lsProjects  = JSON.parse(localStorage.getItem('kibitech_projects')  || '[]');
+  let lsEngineers = JSON.parse(localStorage.getItem('kibitech_engineers') || '[]');
+  let lsAssigns   = JSON.parse(localStorage.getItem('kibitech_assigns')   || '[]');
+
+  if (!lsProjects.length && !lsEngineers.length && !lsAssigns.length) {
+    localStorage.setItem('kibitech_migrated_supabase', '1');
+    return;
+  }
+
+  // 旧データを正規化（weeklyHours/スキル未設定のレコードを補完）
+  lsProjects.forEach(p => {
+    if (!p.weeklyHours) {
+      p.weeklyHours = {};
+      if (p.startDate && p.endDate && p.requiredHours)
+        getWeeksBetween(p.startDate, p.endDate).forEach(w => { p.weeklyHours[w]=Number(p.requiredHours); });
+    }
+    if (!p.requiredDomains) p.requiredDomains = {};
+    if (!p.requiredSkills)  p.requiredSkills  = {};
+  });
+  lsEngineers.forEach(e => {
+    if (!e.domainSkills) e.domainSkills = {};
+    if (!e.mainSkills)   e.mainSkills   = {};
+  });
+  lsAssigns.forEach(a => {
+    if (!a.weeklyHours) {
+      a.weeklyHours = {};
+      const proj = lsProjects.find(p => p.id === a.projectId);
+      if (proj && proj.startDate && proj.endDate && a.hours)
+        getWeeksBetween(proj.startDate, proj.endDate).forEach(w => { a.weeklyHours[w]=Number(a.hours); });
+      else if (a.hours)
+        a.weeklyHours[currentWeekKey()] = Number(a.hours);
+    }
+  });
+
+  showLoading('既存データを移行中...');
+  try {
+    const projectIdMap = {}, engineerIdMap = {};
+
+    for (const p of lsProjects) {
+      const {data,error} = await sb.from('projects').insert(projectToRow(p)).select('id').single();
+      if (!error && data) projectIdMap[p.id] = data.id;
+    }
+    for (const e of lsEngineers) {
+      const {data,error} = await sb.from('engineers').insert(engineerToRow(e)).select('id').single();
+      if (!error && data) engineerIdMap[e.id] = data.id;
+    }
+    for (const a of lsAssigns) {
+      const newPid = projectIdMap[a.projectId], newEid = engineerIdMap[a.engineerId];
+      if (!newPid || !newEid) continue;
+      await sb.from('assignments').insert({ project_id:newPid, engineer_id:newEid, role:a.role||'', weekly_hours:a.weeklyHours||{} });
+    }
+
+    localStorage.setItem('kibitech_migrated_supabase', '1');
+  } catch(e) {
+    showError('データ移行に失敗しました: '+(e.message||e));
+  } finally {
+    hideLoading();
+  }
+}
+
 // ========== INIT ==========
-migrateData();
-renderDashboard();
+(async () => {
+  updateAuthUI();                   // セッションからログイン状態を復元
+  await ensureDefaultAdmin();       // admins テーブルが空なら初期パスワードを登録
+  migrateData();                    // localStorage内の旧形式データを正規化
+  await migrateFromLocalStorage();  // 初回のみ localStorage → Supabase へ移行
+  await loadAll();                  // Supabase からキャッシュに読み込み
+  renderDashboard();
+})();
 </script>
 </body>
 </html>
