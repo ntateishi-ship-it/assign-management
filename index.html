@@ -6,360 +6,255 @@
 <title>アサイン管理 | キビテク</title>
 <style>
   :root {
-    --primary: #1a56db;
-    --primary-dark: #1e429f;
-    --success: #057a55;
-    --success-bg: #def7ec;
-    --danger: #c81e1e;
-    --danger-bg: #fde8e8;
-    --warning: #b45309;
-    --warning-bg: #fef3c7;
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-400: #9ca3af;
-    --gray-500: #6b7280;
-    --gray-600: #4b5563;
-    --gray-700: #374151;
-    --gray-800: #1f2937;
-    --gray-900: #111827;
-    --radius: 8px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
-    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+    --primary: #1a56db; --primary-dark: #1e429f;
+    --success: #057a55; --success-bg: #def7ec;
+    --danger: #c81e1e; --danger-bg: #fde8e8;
+    --warning: #b45309; --warning-bg: #fef3c7;
+    --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb;
+    --gray-300:#d1d5db; --gray-400:#9ca3af; --gray-500:#6b7280;
+    --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937; --gray-900:#111827;
+    --radius:8px;
+    --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+    --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+    --shadow-lg:0 10px 15px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.05);
   }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
-    background: var(--gray-100);
-    color: var(--gray-800);
-    font-size: 14px;
-    min-height: 100vh;
-  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;background:var(--gray-100);color:var(--gray-800);font-size:14px;min-height:100vh;}
 
   /* Header */
-  header {
-    background: linear-gradient(135deg, #1a56db 0%, #1e429f 100%);
-    color: white;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    height: 56px;
-    box-shadow: 0 2px 8px rgba(26,86,219,0.4);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .logo { display: flex; align-items: center; gap: 10px; }
-  .logo-icon {
-    width: 32px; height: 32px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-  }
-  .logo-text { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
-  .logo-sub { font-size: 11px; opacity: 0.75; font-weight: 400; margin-left: 2px; }
-  header .divider { width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 4px; }
-  .header-title { font-size: 14px; opacity: 0.9; font-weight: 500; }
+  header{background:linear-gradient(135deg,#1a56db 0%,#1e429f 100%);color:white;padding:0 24px;display:flex;align-items:center;gap:16px;height:56px;box-shadow:0 2px 8px rgba(26,86,219,.4);position:sticky;top:0;z-index:100;}
+  .logo{display:flex;align-items:center;gap:10px;}
+  .logo-icon{width:32px;height:32px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .logo-text{font-size:18px;font-weight:700;letter-spacing:-.3px;}
+  .logo-sub{font-size:11px;opacity:.75;font-weight:400;margin-left:2px;}
+  header .divider{width:1px;height:24px;background:rgba(255,255,255,.2);margin:0 4px;}
+  .header-title{font-size:14px;opacity:.9;font-weight:500;}
 
   /* Tabs */
-  .tabs-bar {
-    background: white;
-    border-bottom: 1px solid var(--gray-200);
-    padding: 0 24px;
-    display: flex;
-    gap: 0;
-    box-shadow: var(--shadow);
-  }
-  .tab-btn {
-    padding: 14px 20px;
-    border: none; background: none; cursor: pointer;
-    font-size: 14px; font-weight: 500; color: var(--gray-500);
-    border-bottom: 3px solid transparent;
-    transition: all 0.15s;
-    display: flex; align-items: center; gap: 8px; white-space: nowrap;
-  }
-  .tab-btn:hover { color: var(--primary); background: var(--gray-50); }
-  .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
-  .tab-icon { font-size: 16px; }
+  .tabs-bar{background:white;border-bottom:1px solid var(--gray-200);padding:0 24px;display:flex;box-shadow:var(--shadow);}
+  .tab-btn{padding:14px 18px;border:none;background:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--gray-500);border-bottom:3px solid transparent;transition:all .15s;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+  .tab-btn:hover{color:var(--primary);background:var(--gray-50);}
+  .tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+  .tab-icon{font-size:15px;}
 
-  /* Main Content */
-  .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
-  .view { display: none; }
-  .view.active { display: block; }
+  /* Main */
+  .main{padding:24px;max-width:1400px;margin:0 auto;}
+  .view{display:none;}.view.active{display:block;}
 
   /* Section header */
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  .section-title { font-size: 20px; font-weight: 700; color: var(--gray-900); }
-  .section-subtitle { font-size: 13px; color: var(--gray-500); margin-top: 2px; }
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .section-title{font-size:20px;font-weight:700;color:var(--gray-900);}
+  .section-subtitle{font-size:13px;color:var(--gray-500);margin-top:2px;}
 
   /* Buttons */
-  .btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; border-radius: var(--radius);
-    border: 1px solid transparent; font-size: 13px; font-weight: 500;
-    cursor: pointer; transition: all 0.15s; white-space: nowrap;
-  }
-  .btn-primary { background: var(--primary); color: white; border-color: var(--primary); }
-  .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
-  .btn-secondary { background: white; color: var(--gray-700); border-color: var(--gray-300); }
-  .btn-secondary:hover { background: var(--gray-50); border-color: var(--gray-400); }
-  .btn-danger { background: white; color: var(--danger); border-color: #fca5a5; }
-  .btn-danger:hover { background: var(--danger-bg); }
-  .btn-success { background: #059669; color: white; border-color: #059669; }
-  .btn-success:hover { background: #047857; }
-  .btn-sm { padding: 4px 10px; font-size: 12px; }
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--radius);border:1px solid transparent;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .btn-primary{background:var(--primary);color:white;border-color:var(--primary);}
+  .btn-primary:hover{background:var(--primary-dark);}
+  .btn-secondary{background:white;color:var(--gray-700);border-color:var(--gray-300);}
+  .btn-secondary:hover{background:var(--gray-50);border-color:var(--gray-400);}
+  .btn-danger{background:white;color:var(--danger);border-color:#fca5a5;}
+  .btn-danger:hover{background:var(--danger-bg);}
+  .btn-success{background:#059669;color:white;border-color:#059669;}
+  .btn-success:hover{background:#047857;}
+  .btn-sm{padding:4px 10px;font-size:12px;}
 
   /* Cards */
-  .card {
-    background: white; border-radius: var(--radius);
-    border: 1px solid var(--gray-200); box-shadow: var(--shadow);
-    overflow: hidden; margin-bottom: 16px;
-  }
-  .card-over { border-color: #fca5a5; box-shadow: 0 0 0 2px #fee2e2, var(--shadow); }
-  .card-header {
-    padding: 16px 20px; border-bottom: 1px solid var(--gray-100);
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-  }
-  .card-body { padding: 16px 20px; }
+  .card{background:white;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+  .card-over{border-color:#fca5a5;box-shadow:0 0 0 2px #fee2e2,var(--shadow);}
+  .card-header{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+  .card-body{padding:16px 20px;}
 
-  /* Status badges */
-  .badge {
-    display: inline-flex; align-items: center;
-    padding: 2px 10px; border-radius: 99px;
-    font-size: 12px; font-weight: 600; white-space: nowrap;
-  }
-  .badge-juchu { background: #dbeafe; color: #1e40af; }
-  .badge-mikomi { background: #d1fae5; color: #065f46; }
-  .badge-teian { background: #fef3c7; color: #92400e; }
-  .badge-shisshu { background: var(--gray-100); color: var(--gray-500); }
+  /* Badges */
+  .badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap;}
+  .badge-juchu{background:#dbeafe;color:#1e40af;}
+  .badge-mikomi{background:#d1fae5;color:#065f46;}
+  .badge-teian{background:#fef3c7;color:#92400e;}
+  .badge-shisshu{background:var(--gray-100);color:var(--gray-500);}
+  .chip-ok{background:var(--success-bg);color:var(--success);border:1px solid #a7f3d0;}
+  .chip-ng{background:var(--danger-bg);color:var(--danger);border:1px solid #fca5a5;}
 
-  /* Progress bar */
-  .progress-wrap { display: flex; align-items: center; gap: 10px; }
-  .progress-bar-bg { flex: 1; height: 8px; background: var(--gray-100); border-radius: 99px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; border-radius: 99px; transition: width 0.3s; }
-  .progress-ok .progress-bar-fill { background: #10b981; }
-  .progress-warn .progress-bar-fill { background: #f59e0b; }
-  .progress-over .progress-bar-fill { background: #ef4444; }
-  .progress-label { font-size: 12px; font-weight: 600; min-width: 70px; text-align: right; }
-  .progress-ok .progress-label { color: var(--success); }
-  .progress-warn .progress-label { color: var(--warning); }
-  .progress-over .progress-label { color: var(--danger); }
+  /* Progress */
+  .progress-wrap{display:flex;align-items:center;gap:10px;}
+  .progress-bar-bg{flex:1;height:8px;background:var(--gray-100);border-radius:99px;overflow:hidden;}
+  .progress-bar-fill{height:100%;border-radius:99px;transition:width .3s;}
+  .progress-ok .progress-bar-fill{background:#10b981;}
+  .progress-warn .progress-bar-fill{background:#f59e0b;}
+  .progress-over .progress-bar-fill{background:#ef4444;}
+  .progress-label{font-size:12px;font-weight:600;min-width:70px;text-align:right;}
+  .progress-ok .progress-label{color:var(--success);}
+  .progress-warn .progress-label{color:var(--warning);}
+  .progress-over .progress-label{color:var(--danger);}
 
-  /* Alert banners */
-  .alert { padding: 8px 14px; border-radius: var(--radius); font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
-  .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid #a7f3d0; }
-  .alert-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid #fca5a5; }
-  .alert-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid #fcd34d; }
+  /* Alerts */
+  .alert{padding:8px 14px;border-radius:var(--radius);font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;}
+  .alert-success{background:var(--success-bg);color:var(--success);border:1px solid #a7f3d0;}
+  .alert-danger{background:var(--danger-bg);color:var(--danger);border:1px solid #fca5a5;}
+  .alert-warning{background:var(--warning-bg);color:var(--warning);border:1px solid #fcd34d;}
 
-  /* Project cards grid */
-  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
-
-  /* Info rows */
-  .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-bottom: 12px; }
-  .info-item { display: flex; flex-direction: column; gap: 2px; }
-  .info-label { font-size: 11px; color: var(--gray-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-  .info-value { font-size: 13px; color: var(--gray-800); font-weight: 500; }
+  /* Grid / Info */
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;}
+  .info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 16px;margin-bottom:12px;}
+  .info-item{display:flex;flex-direction:column;gap:2px;}
+  .info-label{font-size:11px;color:var(--gray-400);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+  .info-value{font-size:13px;color:var(--gray-800);font-weight:500;}
 
   /* Tags */
-  .tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .tag { display: inline-flex; padding: 2px 8px; background: #eff6ff; color: #1d4ed8; border-radius: 4px; font-size: 11px; font-weight: 500; }
+  .tags{display:flex;flex-wrap:wrap;gap:4px;}
+  .tag{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;background:#eff6ff;color:#1d4ed8;border-radius:4px;font-size:11px;font-weight:500;}
+  .tag-domain{background:#fdf4ff;color:#7e22ce;}
+  .tag-level{font-weight:700;font-size:10px;background:rgba(0,0,0,.08);padding:1px 4px;border-radius:3px;}
 
   /* Assign list */
-  .assign-list { margin-top: 12px; }
-  .assign-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 6px 10px; background: var(--gray-50); border-radius: 6px;
-    margin-bottom: 4px; font-size: 12px;
-  }
-  .assign-item-name { font-weight: 500; color: var(--gray-700); }
-  .assign-item-hours { font-weight: 600; color: var(--primary); }
+  .assign-list{margin-top:8px;}
+  .assign-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--gray-50);border-radius:6px;margin-bottom:4px;font-size:12px;}
+  .assign-item-name{font-weight:500;color:var(--gray-700);}
+  .assign-item-hours{font-weight:600;color:var(--primary);}
 
   /* Empty state */
-  .empty-state { text-align: center; padding: 48px 24px; color: var(--gray-400); }
-  .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
-  .empty-state-text { font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--gray-500); }
-  .empty-state-sub { font-size: 13px; }
+  .empty-state{text-align:center;padding:48px 24px;color:var(--gray-400);}
+  .empty-state-icon{font-size:48px;margin-bottom:12px;}
+  .empty-state-text{font-size:15px;font-weight:500;margin-bottom:6px;color:var(--gray-500);}
+  .empty-state-sub{font-size:13px;}
 
   /* Table */
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  th {
-    background: var(--gray-50); padding: 10px 14px; text-align: left;
-    font-size: 11px; font-weight: 700; color: var(--gray-500);
-    text-transform: uppercase; letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--gray-200); white-space: nowrap;
-  }
-  td { padding: 12px 14px; border-bottom: 1px solid var(--gray-100); font-size: 13px; color: var(--gray-700); vertical-align: middle; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--gray-50); }
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--gray-50);padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--gray-200);white-space:nowrap;}
+  td{padding:10px 14px;border-bottom:1px solid var(--gray-100);font-size:13px;color:var(--gray-700);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:var(--gray-50);}
 
   /* Modal */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5); z-index: 1000;
-    align-items: center; justify-content: center; padding: 20px;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: white; border-radius: 12px; box-shadow: var(--shadow-lg);
-    width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
-    animation: modalIn 0.2s ease;
-  }
-  .modal-wide { max-width: 760px; }
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .modal-header {
-    padding: 20px 24px 16px; border-bottom: 1px solid var(--gray-200);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .modal-title { font-size: 17px; font-weight: 700; color: var(--gray-900); }
-  .modal-close { width: 32px; height: 32px; border: none; background: var(--gray-100); border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--gray-500); }
-  .modal-close:hover { background: var(--gray-200); }
-  .modal-body { padding: 20px 24px; }
-  .modal-footer { padding: 16px 24px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 10px; }
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:white;border-radius:12px;box-shadow:var(--shadow-lg);width:100%;max-width:620px;max-height:90vh;overflow-y:auto;animation:modalIn .2s ease;}
+  .modal-wide{max-width:780px;}
+  @keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(-10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;}
+  .modal-title{font-size:17px;font-weight:700;color:var(--gray-900);}
+  .modal-close{width:32px;height:32px;border:none;background:var(--gray-100);border-radius:6px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--gray-500);}
+  .modal-close:hover{background:var(--gray-200);}
+  .modal-body{padding:20px 24px;}
+  .modal-footer{padding:16px 24px;border-top:1px solid var(--gray-200);display:flex;justify-content:flex-end;gap:10px;}
 
   /* Form */
-  .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .form-grid.cols-1 { grid-template-columns: 1fr; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-group.full { grid-column: 1 / -1; }
-  label { font-size: 12px; font-weight: 600; color: var(--gray-600); }
-  label .required { color: var(--danger); margin-left: 3px; }
-  input, select, textarea {
-    padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 6px;
-    font-size: 13px; color: var(--gray-800); background: white;
-    transition: border-color 0.15s, box-shadow 0.15s; font-family: inherit; width: 100%;
-  }
-  input:focus, select:focus, textarea:focus {
-    outline: none; border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(26,86,219,0.1);
-  }
-  textarea { resize: vertical; min-height: 70px; }
-  select { cursor: pointer; }
+  .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .form-grid.cols-1{grid-template-columns:1fr;}
+  .form-group{display:flex;flex-direction:column;gap:5px;}
+  .form-group.full{grid-column:1/-1;}
+  label{font-size:12px;font-weight:600;color:var(--gray-600);}
+  label .required{color:var(--danger);margin-left:3px;}
+  input,select,textarea{padding:8px 12px;border:1px solid var(--gray-300);border-radius:6px;font-size:13px;color:var(--gray-800);background:white;transition:border-color .15s,box-shadow .15s;font-family:inherit;width:100%;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+  textarea{resize:vertical;min-height:60px;}
 
   /* Filter bar */
-  .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-  .filter-bar input, .filter-bar select { max-width: 200px; }
-
-  /* Assign view */
-  .assign-matrix {
-    background: white; border-radius: var(--radius);
-    border: 1px solid var(--gray-200); box-shadow: var(--shadow); overflow: hidden;
-  }
-  .assign-form-card {
-    background: white; border-radius: var(--radius);
-    border: 1px solid var(--gray-200); box-shadow: var(--shadow);
-    padding: 20px; margin-bottom: 20px;
-  }
-  .assign-form-title { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-  .assign-form-row { display: grid; grid-template-columns: 1fr 1fr 130px 130px auto; gap: 12px; align-items: end; }
-
-  .hours-suffix { position: relative; }
-  .hours-suffix input { padding-right: 50px; }
-  .hours-suffix::after { content: '時間/週'; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--gray-400); pointer-events: none; }
-
-  /* Workload summary */
-  .workload-summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; }
-  .workload-card { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 14px 16px; box-shadow: var(--shadow); }
-  .workload-card-name { font-size: 13px; font-weight: 600; color: var(--gray-800); margin-bottom: 8px; }
-  .workload-card-sub { font-size: 11px; color: var(--gray-400); margin-bottom: 8px; }
-
-  /* Dashboard */
-  .dash-kpi-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-  .kpi-card {
-    background: white; border-radius: var(--radius); border: 1px solid var(--gray-200);
-    box-shadow: var(--shadow); padding: 20px 20px 16px;
-  }
-  .kpi-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .kpi-value { font-size: 32px; font-weight: 800; color: var(--gray-900); line-height: 1; }
-  .kpi-unit { font-size: 14px; color: var(--gray-500); font-weight: 500; margin-left: 4px; }
-  .kpi-sub { font-size: 12px; color: var(--gray-400); margin-top: 6px; }
-  .kpi-card-blue { border-left: 4px solid var(--primary); }
-  .kpi-card-green { border-left: 4px solid #10b981; }
-  .kpi-card-yellow { border-left: 4px solid #f59e0b; }
-  .kpi-card-red { border-left: 4px solid #ef4444; }
-
-  .dash-section { margin-bottom: 28px; }
-  .dash-section-title {
-    font-size: 15px; font-weight: 700; color: var(--gray-800);
-    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
-  }
-  .alert-list { display: flex; flex-direction: column; gap: 8px; }
-  .alert-item {
-    background: white; border: 1px solid #fca5a5; border-radius: var(--radius);
-    padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
-    gap: 12px; box-shadow: var(--shadow);
-  }
-  .alert-item-info { flex: 1; min-width: 0; }
-  .alert-item-name { font-weight: 600; color: var(--gray-900); font-size: 14px; margin-bottom: 2px; }
-  .alert-item-client { font-size: 12px; color: var(--gray-500); }
-  .alert-item-hours { font-size: 13px; font-weight: 700; color: var(--danger); white-space: nowrap; }
+  .filter-bar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+  .filter-bar input,.filter-bar select{max-width:200px;}
 
   /* Axis toggle */
-  .axis-toggle { display: flex; gap: 0; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; }
-  .axis-btn { padding: 6px 14px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; background: white; color: var(--gray-500); transition: all 0.15s; }
-  .axis-btn.active { background: var(--primary); color: white; }
-  .axis-btn:hover:not(.active) { background: var(--gray-50); }
+  .axis-toggle{display:flex;border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;}
+  .axis-btn{padding:6px 14px;border:none;cursor:pointer;font-size:12px;font-weight:600;background:white;color:var(--gray-500);transition:all .15s;}
+  .axis-btn.active{background:var(--primary);color:white;}
+  .axis-btn:hover:not(.active){background:var(--gray-50);}
+
+  /* Workload summary */
+  .workload-summary{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-bottom:20px;}
+  .workload-card{background:white;border-radius:var(--radius);border:1px solid var(--gray-200);padding:14px 16px;box-shadow:var(--shadow);}
+  .workload-card-name{font-size:13px;font-weight:600;color:var(--gray-800);margin-bottom:6px;}
+  .workload-card-sub{font-size:11px;color:var(--gray-400);margin-bottom:8px;}
+
+  /* Dashboard */
+  .dash-kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:24px;}
+  .kpi-card{background:white;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);padding:18px 18px 14px;}
+  .kpi-label{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+  .kpi-value{font-size:30px;font-weight:800;color:var(--gray-900);line-height:1;}
+  .kpi-unit{font-size:13px;color:var(--gray-500);font-weight:500;margin-left:3px;}
+  .kpi-sub{font-size:11px;color:var(--gray-400);margin-top:5px;}
+  .kpi-card-blue{border-left:4px solid var(--primary);}
+  .kpi-card-green{border-left:4px solid #10b981;}
+  .kpi-card-yellow{border-left:4px solid #f59e0b;}
+  .kpi-card-red{border-left:4px solid #ef4444;}
+  .dash-section{margin-bottom:24px;}
+  .dash-section-title{font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+  .alert-list{display:flex;flex-direction:column;gap:8px;}
+  .alert-item{background:white;border:1px solid #fca5a5;border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow);}
+  .alert-item-info{flex:1;min-width:0;}
+  .alert-item-name{font-weight:600;color:var(--gray-900);font-size:13px;margin-bottom:2px;}
+  .alert-item-client{font-size:11px;color:var(--gray-500);}
+  .alert-item-hours{font-size:13px;font-weight:700;color:var(--danger);white-space:nowrap;text-align:right;}
+  .avail-card{background:white;border:1px solid #a7f3d0;border-radius:var(--radius);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow);}
+
+  /* Skill UI */
+  .skill-section-label{font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;margin:12px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--gray-100);}
+  .skill-section-label:first-child{margin-top:0;}
+  .skill-rows{display:flex;flex-direction:column;gap:5px;}
+  .skill-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:4px 6px;border-radius:4px;}
+  .skill-row:hover{background:var(--gray-50);}
+  .skill-check{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--gray-700);}
+  .skill-check input[type=checkbox]{width:15px;height:15px;cursor:pointer;accent-color:var(--primary);flex-shrink:0;}
+  .skill-level{width:70px;font-size:12px;padding:3px 6px;}
+
+  /* Week hours UI */
+  .week-table-container{max-height:220px;overflow-y:auto;border:1px solid var(--gray-200);border-radius:6px;padding:8px;}
+  .week-bulk-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--gray-100);}
+  .week-bulk-row input{max-width:110px;}
+  .week-rows{display:flex;flex-direction:column;gap:4px;}
+  .week-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .week-label{font-size:12px;color:var(--gray-600);white-space:nowrap;min-width:80px;}
+  .week-input-wrap{display:flex;align-items:center;gap:4px;}
+  .week-input{width:80px;padding:4px 8px;font-size:12px;}
+  .week-unit{font-size:11px;color:var(--gray-400);}
+  .monthly-calc{padding:8px 12px;background:var(--gray-50);border-radius:6px;font-size:12px;color:var(--gray-600);margin-top:4px;}
+
+  /* Assign view */
+  .assign-matrix{background:white;border-radius:var(--radius);border:1px solid var(--gray-200);box-shadow:var(--shadow);overflow:hidden;}
 
   /* Candidate modal */
-  .candidate-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 14px; border-radius: var(--radius);
-    border: 1px solid var(--gray-200); margin-bottom: 8px;
-    background: white; gap: 12px;
-  }
-  .candidate-info { flex: 1; min-width: 0; }
-  .candidate-name { font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
-  .candidate-skills { font-size: 12px; color: var(--gray-500); }
-  .candidate-avail { font-size: 12px; font-weight: 600; }
-  .avail-ok { color: var(--success); }
-  .avail-low { color: var(--warning); }
-  .avail-none { color: var(--danger); }
+  .candidate-item{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 14px;border-radius:var(--radius);border:1px solid var(--gray-200);margin-bottom:8px;background:white;gap:12px;}
+  .candidate-info{flex:1;min-width:0;}
+  .candidate-name{font-weight:600;color:var(--gray-900);margin-bottom:4px;font-size:13px;}
+  .candidate-avail-ok{color:var(--success);font-weight:600;}
+  .candidate-avail-low{color:var(--warning);font-weight:600;}
+  .candidate-avail-none{color:var(--danger);font-weight:600;}
 
-  /* Tooltips */
-  [data-tooltip] { position: relative; cursor: help; }
-  [data-tooltip]::after {
-    content: attr(data-tooltip); position: absolute; bottom: calc(100% + 6px);
-    left: 50%; transform: translateX(-50%); background: var(--gray-800); color: white;
-    font-size: 11px; padding: 4px 8px; border-radius: 4px; white-space: nowrap;
-    opacity: 0; pointer-events: none; transition: opacity 0.15s; z-index: 999;
-  }
-  [data-tooltip]:hover::after { opacity: 1; }
-
-  /* Responsive */
-  @media (max-width: 640px) {
-    .main { padding: 16px; }
-    .cards-grid { grid-template-columns: 1fr; }
-    .form-grid { grid-template-columns: 1fr; }
-    .assign-form-row { grid-template-columns: 1fr 1fr; }
-    .info-grid { grid-template-columns: 1fr; }
-    .dash-kpi-row { grid-template-columns: repeat(2, 1fr); }
-  }
+  /* Timeline */
+  .tl-wrap{overflow-x:auto;border-radius:var(--radius);}
+  .tl-table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;}
+  .tl-table th,.tl-table td{border-bottom:1px solid var(--gray-200);border-right:1px solid var(--gray-100);}
+  .tl-name-header{background:var(--gray-50);padding:10px 14px;font-size:11px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;min-width:200px;position:sticky;left:0;z-index:10;border-right:2px solid var(--gray-200) !important;}
+  .tl-week-th{background:var(--gray-50);padding:8px 6px;font-size:12px;font-weight:700;color:var(--gray-600);text-align:center;min-width:70px;white-space:nowrap;}
+  .tl-current-th{background:#eff6ff;color:var(--primary);}
+  .tl-name-cell{padding:10px 14px;background:white;position:sticky;left:0;z-index:5;border-right:2px solid var(--gray-200) !important;min-width:200px;vertical-align:top;}
+  .tl-name-cell-inner{font-weight:600;font-size:13px;color:var(--gray-900);margin-bottom:3px;}
+  .tl-req-label{font-size:11px;color:var(--gray-400);margin-top:2px;}
+  .tl-cell{padding:6px 4px;text-align:center;font-size:12px;font-weight:600;vertical-align:middle;min-width:70px;cursor:default;}
+  .tl-cell-inner{font-size:12px;}
+  .tl-zero{color:var(--gray-300);font-weight:400;}
+  .tl-green{background:#d1fae5;color:#065f46;}
+  .tl-yellow{background:#fef3c7;color:#92400e;}
+  .tl-red{background:#fee2e2;color:#991b1b;}
+  .tl-gray{background:var(--gray-50);color:var(--gray-400);}
+  .tl-current-col{border-left:2px solid #93c5fd !important;border-right:2px solid #93c5fd !important;}
+  .tl-detail-name{padding:4px 14px;background:#fafafa;position:sticky;left:0;z-index:5;border-right:2px solid var(--gray-200) !important;}
+  .tl-detail-cell{padding:3px 4px;text-align:center;background:#fafafa;}
+  .tl-eng-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;}
+  .tl-eng-tag{font-size:10px;background:white;border:1px solid var(--gray-200);border-radius:3px;padding:1px 5px;white-space:nowrap;color:var(--gray-600);}
 
   /* Misc */
-  .text-sm { font-size: 12px; }
-  .text-muted { color: var(--gray-400); }
-  .flex { display: flex; }
-  .items-center { align-items: center; }
-  .gap-2 { gap: 8px; }
-  .mt-2 { margin-top: 8px; }
-  .mt-3 { margin-top: 12px; }
-  .actions { display: flex; gap: 6px; }
-  .divider-label { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin: 16px 0 10px; }
-  .chip-ok { background: var(--success-bg); color: var(--success); border: 1px solid #a7f3d0; }
-  .chip-ng { background: var(--danger-bg); color: var(--danger); border: 1px solid #fca5a5; }
+  .divider-label{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;}
+  .actions{display:flex;gap:6px;}
+  .text-sm{font-size:12px;}
+  .text-muted{color:var(--gray-400);}
+  .mt-2{margin-top:8px;}
+  .flex{display:flex;} .items-center{align-items:center;} .gap-2{gap:8px;}
+
+  @media(max-width:640px){
+    .main{padding:16px;}
+    .cards-grid{grid-template-columns:1fr;}
+    .form-grid{grid-template-columns:1fr;}
+    .dash-kpi-row{grid-template-columns:repeat(2,1fr);}
+  }
 </style>
 </head>
 <body>
@@ -367,220 +262,146 @@
 <header>
   <div class="logo">
     <div class="logo-icon">🤖</div>
-    <div>
-      <div class="logo-text">キビテク <span class="logo-sub">HATS Project</span></div>
-    </div>
+    <div><div class="logo-text">キビテク <span class="logo-sub">HATS Project</span></div></div>
   </div>
   <div class="divider"></div>
   <span class="header-title">エンジニア アサイン管理システム</span>
 </header>
 
 <div class="tabs-bar">
-  <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">
-    <span class="tab-icon">🏠</span>ダッシュボード
-  </button>
-  <button class="tab-btn" data-tab="projects" onclick="switchTab('projects')">
-    <span class="tab-icon">📋</span>案件管理
-  </button>
-  <button class="tab-btn" data-tab="engineers" onclick="switchTab('engineers')">
-    <span class="tab-icon">👥</span>エンジニア管理
-  </button>
-  <button class="tab-btn" data-tab="assigns" onclick="switchTab('assigns')">
-    <span class="tab-icon">🔗</span>アサイン管理
-  </button>
+  <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')"><span class="tab-icon">🏠</span>ダッシュボード</button>
+  <button class="tab-btn" data-tab="projects" onclick="switchTab('projects')"><span class="tab-icon">📋</span>案件管理</button>
+  <button class="tab-btn" data-tab="engineers" onclick="switchTab('engineers')"><span class="tab-icon">👥</span>エンジニア管理</button>
+  <button class="tab-btn" data-tab="assigns" onclick="switchTab('assigns')"><span class="tab-icon">🔗</span>アサイン管理</button>
+  <button class="tab-btn" data-tab="timeline" onclick="switchTab('timeline')"><span class="tab-icon">📅</span>タイムライン</button>
 </div>
 
 <div class="main">
 
-  <!-- ===== ダッシュボード ===== -->
-  <div id="view-dashboard" class="view active">
-    <div class="section-header">
-      <div>
-        <div class="section-title">ダッシュボード</div>
-        <div class="section-subtitle">全体の稼働状況と案件サマリーを一覧できます</div>
-      </div>
-    </div>
-
-    <!-- KPI Cards -->
-    <div id="dash-kpi" class="dash-kpi-row"></div>
-
-    <!-- 工数不足アラート -->
+<!-- ダッシュボード -->
+<div id="view-dashboard" class="view active">
+  <div class="section-header">
+    <div><div class="section-title">ダッシュボード</div><div class="section-subtitle">全体の稼働状況と案件サマリー</div></div>
+  </div>
+  <div id="dash-kpi" class="dash-kpi-row"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
     <div class="dash-section">
-      <div class="dash-section-title">⚠️ 工数不足の案件</div>
+      <div class="dash-section-title">⚠️ 今週の工数不足案件</div>
       <div id="dash-alerts" class="alert-list"></div>
     </div>
-
-    <!-- エンジニア稼働サマリー -->
     <div class="dash-section">
-      <div class="dash-section-title">👥 エンジニア稼働状況（空き工数の多い順）</div>
-      <div id="dash-workload" class="cards-grid"></div>
+      <div class="dash-section-title">✅ 今週空きのあるエンジニア</div>
+      <div id="dash-avail" class="alert-list"></div>
     </div>
   </div>
-
-  <!-- ===== 案件管理ビュー ===== -->
-  <div id="view-projects" class="view">
-    <div class="section-header">
-      <div>
-        <div class="section-title">案件管理</div>
-        <div class="section-subtitle">案件の登録・管理とエンジニアアサイン状況を確認できます</div>
-      </div>
-      <button class="btn btn-primary" onclick="openProjectModal()">＋ 新規案件登録</button>
-    </div>
-    <div class="filter-bar">
-      <input type="text" id="project-search" placeholder="🔍 案件名・クライアントで検索" oninput="renderProjects()">
-      <select id="project-status-filter" onchange="renderProjects()">
-        <option value="">すべてのステータス</option>
-        <option value="受注済み">受注済み</option>
-        <option value="受注見込み">受注見込み</option>
-        <option value="提案中">提案中</option>
-        <option value="失注">失注</option>
-      </select>
-    </div>
-    <div id="projects-grid" class="cards-grid"></div>
-  </div>
-
-  <!-- ===== エンジニア管理ビュー ===== -->
-  <div id="view-engineers" class="view">
-    <div class="section-header">
-      <div>
-        <div class="section-title">エンジニア管理</div>
-        <div class="section-subtitle">エンジニアの登録・管理とアサイン状況・稼働率を確認できます</div>
-      </div>
-      <button class="btn btn-primary" onclick="openEngineerModal()">＋ 新規エンジニア登録</button>
-    </div>
-    <div class="filter-bar">
-      <input type="text" id="engineer-search" placeholder="🔍 氏名・スキルで検索" oninput="renderEngineers()">
-      <select id="engineer-type-filter" onchange="renderEngineers()">
-        <option value="">すべての雇用形態</option>
-        <option value="正社員">正社員</option>
-        <option value="業務委託">業務委託</option>
-        <option value="パート・アルバイト">パート・アルバイト</option>
-        <option value="その他">その他</option>
-      </select>
-    </div>
-    <div id="engineers-grid" class="cards-grid"></div>
-  </div>
-
-  <!-- ===== アサイン管理ビュー ===== -->
-  <div id="view-assigns" class="view">
-    <div class="section-header">
-      <div>
-        <div class="section-title">アサイン管理</div>
-        <div class="section-subtitle">案件とエンジニアの紐付けを管理します</div>
-      </div>
-    </div>
-
-    <div class="assign-form-card">
-      <div class="assign-form-title">🔗 新規アサイン登録</div>
-      <div class="assign-form-row">
-        <div class="form-group">
-          <label>案件</label>
-          <select id="assign-project-select"></select>
-        </div>
-        <div class="form-group">
-          <label>エンジニア</label>
-          <select id="assign-engineer-select"></select>
-        </div>
-        <div class="form-group">
-          <label>週次稼働工数</label>
-          <div class="hours-suffix">
-            <input type="number" id="assign-hours" min="1" max="80" placeholder="例: 20">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>役割</label>
-          <select id="assign-role">
-            <option value="エンジニア">エンジニア</option>
-            <option value="PL">PL</option>
-            <option value="PM">PM</option>
-            <option value="テックリード">テックリード</option>
-            <option value="QA">QA</option>
-            <option value="デザイナー">デザイナー</option>
-            <option value="その他">その他</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>&nbsp;</label>
-          <button class="btn btn-primary" onclick="addAssign()">登録</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="divider-label">稼働負荷サマリー</div>
-    <div id="workload-summary" class="workload-summary"></div>
-
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-      <div class="divider-label" style="margin:0">アサイン一覧</div>
-      <div class="axis-toggle">
-        <button class="axis-btn active" id="axis-btn-project" onclick="setAxis('project')">案件軸</button>
-        <button class="axis-btn" id="axis-btn-engineer" onclick="setAxis('engineer')">エンジニア軸</button>
-      </div>
-    </div>
-    <div class="assign-matrix">
-      <div class="table-wrap">
-        <table id="assign-table">
-          <thead id="assign-thead"></thead>
-          <tbody id="assign-tbody"></tbody>
-        </table>
-      </div>
-    </div>
+  <div class="dash-section">
+    <div class="dash-section-title">👥 エンジニア稼働状況（今週・空き工数の多い順）</div>
+    <div id="dash-workload" class="workload-summary"></div>
   </div>
 </div>
 
+<!-- 案件管理 -->
+<div id="view-projects" class="view">
+  <div class="section-header">
+    <div><div class="section-title">案件管理</div><div class="section-subtitle">案件の登録・管理とエンジニアアサイン状況</div></div>
+    <button class="btn btn-primary" onclick="openProjectModal()">＋ 新規案件登録</button>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="project-search" placeholder="🔍 案件名・クライアントで検索" oninput="renderProjects()">
+    <select id="project-status-filter" onchange="renderProjects()">
+      <option value="">すべてのステータス</option>
+      <option value="受注済み">受注済み</option>
+      <option value="受注見込み">受注見込み</option>
+      <option value="提案中">提案中</option>
+      <option value="失注">失注</option>
+    </select>
+  </div>
+  <div id="projects-grid" class="cards-grid"></div>
+</div>
+
+<!-- エンジニア管理 -->
+<div id="view-engineers" class="view">
+  <div class="section-header">
+    <div><div class="section-title">エンジニア管理</div><div class="section-subtitle">エンジニアの登録・管理とアサイン状況・稼働率</div></div>
+    <button class="btn btn-primary" onclick="openEngineerModal()">＋ 新規エンジニア登録</button>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="engineer-search" placeholder="🔍 氏名・スキルで検索" oninput="renderEngineers()">
+    <select id="engineer-type-filter" onchange="renderEngineers()">
+      <option value="">すべての雇用形態</option>
+      <option value="正社員・契約社員・パートタイム">正社員・契約社員・パートタイム</option>
+      <option value="派遣社員">派遣社員</option>
+      <option value="業務委託">業務委託</option>
+      <option value="その他">その他</option>
+    </select>
+  </div>
+  <div id="engineers-grid" class="cards-grid"></div>
+</div>
+
+<!-- アサイン管理 -->
+<div id="view-assigns" class="view">
+  <div class="section-header">
+    <div><div class="section-title">アサイン管理</div><div class="section-subtitle">案件とエンジニアの紐付けを管理します</div></div>
+    <button class="btn btn-primary" onclick="openAssignModal()">＋ アサイン登録</button>
+  </div>
+  <div class="divider-label">稼働負荷サマリー（今週）</div>
+  <div id="workload-summary" class="workload-summary"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <div class="divider-label" style="margin:0">アサイン一覧</div>
+    <div class="axis-toggle">
+      <button class="axis-btn active" id="axis-btn-project" onclick="setAxis('project')">案件軸</button>
+      <button class="axis-btn" id="axis-btn-engineer" onclick="setAxis('engineer')">エンジニア軸</button>
+    </div>
+  </div>
+  <div class="assign-matrix"><div class="table-wrap"><table><thead id="assign-thead"></thead><tbody id="assign-tbody"></tbody></table></div></div>
+</div>
+
+<!-- タイムライン -->
+<div id="view-timeline" class="view">
+  <div class="section-header">
+    <div><div class="section-title">タイムライン</div><div class="section-subtitle">今週から13週先までの工数状況</div></div>
+    <div class="axis-toggle">
+      <button class="axis-btn active" id="tl-axis-btn-project" onclick="setTlAxis('project')">案件軸</button>
+      <button class="axis-btn" id="tl-axis-btn-engineer" onclick="setTlAxis('engineer')">エンジニア軸</button>
+    </div>
+  </div>
+  <div class="assign-matrix"><div id="timeline-content"></div></div>
+</div>
+
+</div><!-- end .main -->
+
 <!-- ===== 案件モーダル ===== -->
 <div class="modal-overlay" id="project-modal">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="modal-header">
       <div class="modal-title" id="project-modal-title">案件登録</div>
       <button class="modal-close" onclick="closeModal('project-modal')">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
+        <div class="form-group full"><label>案件名 <span class="required">*</span></label><input type="text" id="p-name" placeholder="例: HATs v2.0 開発支援"></div>
+        <div class="form-group"><label>クライアント名 <span class="required">*</span></label><input type="text" id="p-client" placeholder="例: ○○製造株式会社"></div>
+        <div class="form-group"><label>ステータス <span class="required">*</span></label>
+          <select id="p-status"><option value="受注済み">受注済み</option><option value="受注見込み">受注見込み</option><option value="提案中">提案中</option><option value="失注">失注</option></select>
+        </div>
+        <div class="form-group"><label>開始日</label><input type="date" id="p-start" onchange="updateProjectWeekTable()"></div>
+        <div class="form-group"><label>終了予定日</label><input type="date" id="p-end" onchange="updateProjectWeekTable()"></div>
+        <div class="form-group"><label>売上（万円/月）</label><input type="number" id="p-revenue" min="0" placeholder="例: 150"></div>
         <div class="form-group full">
-          <label>案件名 <span class="required">*</span></label>
-          <input type="text" id="p-name" placeholder="例: HATs v2.0 開発支援">
-        </div>
-        <div class="form-group">
-          <label>クライアント名 <span class="required">*</span></label>
-          <input type="text" id="p-client" placeholder="例: ○○製造株式会社">
-        </div>
-        <div class="form-group">
-          <label>ステータス <span class="required">*</span></label>
-          <select id="p-status">
-            <option value="受注済み">受注済み</option>
-            <option value="受注見込み">受注見込み</option>
-            <option value="提案中">提案中</option>
-            <option value="失注">失注</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>開始日</label>
-          <input type="date" id="p-start">
-        </div>
-        <div class="form-group">
-          <label>終了予定日</label>
-          <input type="date" id="p-end">
-        </div>
-        <div class="form-group">
-          <label>必要工数（時間/週）<span class="required">*</span></label>
-          <input type="number" id="p-required-hours" min="1" placeholder="例: 40">
-        </div>
-        <div class="form-group">
-          <label>売上（万円/月）</label>
-          <input type="number" id="p-revenue" min="0" placeholder="例: 150">
-        </div>
-        <div class="form-group">
-          <label>単価（円/時）</label>
-          <input type="number" id="p-unit-price" min="0" placeholder="例: 8000">
+          <label>週次必要工数</label>
+          <div id="p-week-container">
+            <div class="text-muted text-sm" style="padding:8px">開始日と終了予定日を入力すると週次工数を設定できます</div>
+          </div>
         </div>
         <div class="form-group full">
-          <label>必要スキル（カンマ区切り）</label>
-          <input type="text" id="p-skills" placeholder="例: Python, ROS2, C++, Docker">
+          <label>必要スキル — 6分野</label>
+          <div class="skill-rows" id="p-domain-skills"></div>
         </div>
         <div class="form-group full">
-          <label>備考</label>
-          <textarea id="p-notes" placeholder="備考・特記事項など"></textarea>
+          <label>必要スキル — 主要スキル</label>
+          <div class="skill-rows" id="p-main-skills"></div>
         </div>
+        <div class="form-group full"><label>備考</label><textarea id="p-notes" placeholder="備考・特記事項など"></textarea></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -592,51 +413,74 @@
 
 <!-- ===== エンジニアモーダル ===== -->
 <div class="modal-overlay" id="engineer-modal">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="modal-header">
       <div class="modal-title" id="engineer-modal-title">エンジニア登録</div>
       <button class="modal-close" onclick="closeModal('engineer-modal')">✕</button>
     </div>
     <div class="modal-body">
       <div class="form-grid">
-        <div class="form-group full">
-          <label>氏名 <span class="required">*</span></label>
-          <input type="text" id="e-name" placeholder="例: 山田 太郎">
-        </div>
-        <div class="form-group">
-          <label>雇用形態 <span class="required">*</span></label>
+        <div class="form-group full"><label>氏名 <span class="required">*</span></label><input type="text" id="e-name" placeholder="例: 山田 太郎"></div>
+        <div class="form-group"><label>雇用形態 <span class="required">*</span></label>
           <select id="e-type">
-            <option value="正社員">正社員</option>
+            <option value="正社員・契約社員・パートタイム">正社員・契約社員・パートタイム</option>
+            <option value="派遣社員">派遣社員</option>
             <option value="業務委託">業務委託</option>
-            <option value="パート・アルバイト">パート・アルバイト</option>
             <option value="その他">その他</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>稼働可能工数（時間/週）<span class="required">*</span></label>
-          <input type="number" id="e-available" min="1" max="80" placeholder="例: 40">
-        </div>
-        <div class="form-group">
-          <label>時給（円）</label>
-          <input type="number" id="e-hourly" min="0" placeholder="例: 3000">
-        </div>
-        <div class="form-group">
-          <label>月額単価（万円）</label>
-          <input type="number" id="e-monthly" min="0" placeholder="例: 60">
+        <div class="form-group"><label>稼働可能工数（時間/週）<span class="required">*</span></label><input type="number" id="e-available" min="1" max="80" placeholder="例: 40" oninput="updateMonthlyCalc()"></div>
+        <div class="form-group"><label>時給（円）</label><input type="number" id="e-hourly" min="0" placeholder="例: 3000" oninput="updateMonthlyCalc()"></div>
+        <div class="form-group"><label>月額単価（自動計算）</label><div class="monthly-calc" id="e-monthly-calc">—</div></div>
+        <div class="form-group full">
+          <label>スキル — 6分野</label>
+          <div class="skill-rows" id="e-domain-skills"></div>
         </div>
         <div class="form-group full">
-          <label>スキル・得意技術（カンマ区切り）</label>
-          <input type="text" id="e-skills" placeholder="例: Python, ROS2, 機械学習, Linux">
+          <label>スキル — 主要スキル</label>
+          <div class="skill-rows" id="e-main-skills"></div>
         </div>
-        <div class="form-group full">
-          <label>備考</label>
-          <textarea id="e-notes" placeholder="備考・特記事項など"></textarea>
-        </div>
+        <div class="form-group full"><label>備考</label><textarea id="e-notes" placeholder="備考・特記事項など"></textarea></div>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('engineer-modal')">キャンセル</button>
       <button class="btn btn-primary" onclick="saveEngineer()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== アサインモーダル ===== -->
+<div class="modal-overlay" id="assign-modal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <div class="modal-title" id="assign-modal-title">アサイン登録</div>
+      <button class="modal-close" onclick="closeModal('assign-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>案件 <span class="required">*</span></label><select id="a-project"></select></div>
+        <div class="form-group"><label>エンジニア <span class="required">*</span></label><select id="a-engineer"></select></div>
+        <div class="form-group"><label>役割</label>
+          <select id="a-role"><option value="エンジニア">エンジニア</option><option value="PL">PL</option><option value="PM">PM</option><option value="テックリード">テックリード</option><option value="QA">QA</option><option value="デザイナー">デザイナー</option><option value="その他">その他</option></select>
+        </div>
+        <div class="form-group"><label>デフォルト工数（時間/週）<span class="required">*</span></label><input type="number" id="a-default-hours" min="0" max="80" placeholder="例: 20" oninput="onDefaultHoursChange()"></div>
+        <div class="form-group"><label>開始週 <span class="required">*</span></label><select id="a-start-week" onchange="updateAssignWeekTable()"></select></div>
+        <div class="form-group"><label>終了週 <span class="required">*</span></label><select id="a-end-week" onchange="updateAssignWeekTable()"></select></div>
+        <div class="form-group full">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="a-per-week" onchange="updateAssignWeekTable()" style="width:auto">
+            週ごとに個別設定
+          </label>
+        </div>
+        <div class="form-group full" id="a-week-table-wrap" style="display:none">
+          <div class="week-table-container"><div class="week-rows" id="a-week-rows"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('assign-modal')">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveAssign()">保存</button>
     </div>
   </div>
 </div>
@@ -649,16 +493,14 @@
       <button class="modal-close" onclick="closeModal('candidate-modal')">✕</button>
     </div>
     <div class="modal-body">
-      <div id="candidate-project-info" style="padding:10px 14px;background:var(--gray-50);border-radius:6px;margin-bottom:16px;font-size:13px;color:var(--gray-600)"></div>
+      <div id="candidate-project-info" style="padding:8px 12px;background:var(--gray-50);border-radius:6px;margin-bottom:14px;font-size:12px;color:var(--gray-600)"></div>
       <div id="candidate-list"></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal('candidate-modal')">閉じる</button>
-    </div>
+    <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('candidate-modal')">閉じる</button></div>
   </div>
 </div>
 
-<!-- ===== 候補者クイックアサインモーダル ===== -->
+<!-- ===== クイックアサインモーダル ===== -->
 <div class="modal-overlay" id="quick-assign-modal">
   <div class="modal">
     <div class="modal-header">
@@ -666,25 +508,11 @@
       <button class="modal-close" onclick="closeModal('quick-assign-modal')">✕</button>
     </div>
     <div class="modal-body">
-      <div id="qa-info" style="padding:10px 14px;background:var(--gray-50);border-radius:6px;margin-bottom:16px;font-size:13px;color:var(--gray-600)"></div>
+      <div id="qa-info" style="padding:8px 12px;background:var(--gray-50);border-radius:6px;margin-bottom:14px;font-size:12px;color:var(--gray-600)"></div>
       <div class="form-grid cols-1">
-        <div class="form-group">
-          <label>週次稼働工数（時間/週）<span class="required">*</span></label>
-          <div class="hours-suffix">
-            <input type="number" id="qa-hours" min="1" max="80" placeholder="例: 20">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>役割</label>
-          <select id="qa-role">
-            <option value="エンジニア">エンジニア</option>
-            <option value="PL">PL</option>
-            <option value="PM">PM</option>
-            <option value="テックリード">テックリード</option>
-            <option value="QA">QA</option>
-            <option value="デザイナー">デザイナー</option>
-            <option value="その他">その他</option>
-          </select>
+        <div class="form-group"><label>デフォルト工数（時間/週）<span class="required">*</span></label><input type="number" id="qa-hours" min="1" max="80" placeholder="例: 20"></div>
+        <div class="form-group"><label>役割</label>
+          <select id="qa-role"><option value="エンジニア">エンジニア</option><option value="PL">PL</option><option value="PM">PM</option><option value="テックリード">テックリード</option><option value="QA">QA</option><option value="その他">その他</option></select>
         </div>
       </div>
     </div>
@@ -696,307 +524,412 @@
 </div>
 
 <script>
-// ========== DATA STORE ==========
+// ========== CONSTANTS ==========
+const DOMAINS = ['産業用マニピュレータ','産業用モバイルロボット','研究用マニピュレータ','研究用モバイルロボット','Webフロントエンド','Webバックエンド'];
+const SKILLS = ['分散コンピューティング（ROSなど）','シーケンス制御','画像処理','3次元コンピュータビジョン','運動学','各種通信','機械設計','リアルタイム制御','統計学','Webデザイン','Webアーキテクチャ','電気回路','空圧回路'];
+const LEVELS = ['G1','G2','G3','G4','G5'];
+
+// ========== DB ==========
 const DB = {
-  get: (key) => JSON.parse(localStorage.getItem('kibitech_' + key) || '[]'),
-  set: (key, val) => localStorage.setItem('kibitech_' + key, JSON.stringify(val)),
-  nextId: (key) => {
-    const arr = DB.get(key);
-    return arr.length > 0 ? Math.max(...arr.map(x => x.id)) + 1 : 1;
-  }
+  get: k => JSON.parse(localStorage.getItem('kibitech_' + k) || '[]'),
+  set: (k, v) => localStorage.setItem('kibitech_' + k, JSON.stringify(v)),
+  nextId: k => { const a = DB.get(k); return a.length ? Math.max(...a.map(x=>x.id)) + 1 : 1; }
 };
 
-// ========== HELPERS ==========
+// ========== DATE UTILS ==========
+function getMonday(d) {
+  let date;
+  if (typeof d === 'string') { const [y,m,dy] = d.split('-').map(Number); date = new Date(y, m-1, dy); }
+  else { date = new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  const dow = date.getDay();
+  date.setDate(date.getDate() + (dow === 0 ? -6 : 1 - dow));
+  return date;
+}
+function toWeekKey(date) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+}
+function currentWeekKey() { return toWeekKey(getMonday(new Date())); }
+function getWeeksBetween(s, e) {
+  const weeks = [], end = (typeof e==='string') ? (()=>{const [y,m,d]=e.split('-').map(Number);return new Date(y,m-1,d);})() : e;
+  let cur = getMonday(s);
+  while (cur <= end) { weeks.push(toWeekKey(new Date(cur))); cur.setDate(cur.getDate()+7); }
+  return weeks;
+}
+function getTimelineWeeks() {
+  const weeks = []; let cur = getMonday(new Date());
+  for (let i=0; i<14; i++) { weeks.push(toWeekKey(new Date(cur))); cur.setDate(cur.getDate()+7); }
+  return weeks;
+}
+function formatWeekHdr(wk) { const [,m,d]=wk.split('-').map(Number); return `${m}/${d}`; }
+function formatWeekLabel(wk) { const [,m,d]=wk.split('-').map(Number); return `${m}/${d}(月)`; }
+function generateWeekOptions(selectedKey) {
+  let cur = getMonday(new Date()); cur.setMonth(cur.getMonth()-3); cur=getMonday(cur);
+  const end = new Date(); end.setMonth(end.getMonth()+18);
+  let html = '<option value="">週を選択...</option>';
+  while (cur <= end) {
+    const k = toWeekKey(new Date(cur));
+    html += `<option value="${k}" ${k===selectedKey?'selected':''}>${formatWeekLabel(k)}</option>`;
+    cur.setDate(cur.getDate()+7);
+  }
+  return html;
+}
+
+// ========== MISC HELPERS ==========
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function statusBadge(s) {
-  const map = { '受注済み': 'badge-juchu', '受注見込み': 'badge-mikomi', '提案中': 'badge-teian', '失注': 'badge-shisshu' };
-  return `<span class="badge ${map[s] || ''}">${s}</span>`;
+  const m={'受注済み':'badge-juchu','受注見込み':'badge-mikomi','提案中':'badge-teian','失注':'badge-shisshu'};
+  return `<span class="badge ${m[s]||''}">${esc(s)}</span>`;
+}
+function fmtDate(d) { return d ? d.replace(/-/g,'/') : '—'; }
+function fmtNum(n, sfx='') { return (n===''||n==null) ? '—' : Number(n).toLocaleString()+sfx; }
+function levelIndex(l) { return LEVELS.indexOf(l); }
+
+// ========== SKILL DISPLAY ==========
+function skillTagsHTML(domainSkills, mainSkills, legacySkills) {
+  const tags = [];
+  Object.entries(domainSkills||{}).forEach(([k,v])=>tags.push(`<span class="tag tag-domain">${esc(k)} <span class="tag-level">${v}</span></span>`));
+  Object.entries(mainSkills||{}).forEach(([k,v])=>tags.push(`<span class="tag">${esc(k)} <span class="tag-level">${v}</span></span>`));
+  if (!tags.length && legacySkills) (legacySkills||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(s=>tags.push(`<span class="tag">${esc(s)}</span>`));
+  return tags.length ? tags.join('') : '<span class="text-muted">スキル未登録</span>';
+}
+function reqSkillTagsHTML(reqDomains, reqSkills) {
+  const tags=[];
+  Object.entries(reqDomains||{}).forEach(([k,v])=>tags.push(`<span class="tag tag-domain">${esc(k)} <span class="tag-level">${v}以上</span></span>`));
+  Object.entries(reqSkills||{}).forEach(([k,v])=>tags.push(`<span class="tag">${esc(k)} <span class="tag-level">${v}以上</span></span>`));
+  return tags.length ? tags.join('') : '<span class="text-muted">スキル条件なし</span>';
 }
 
-function formatDate(d) {
-  if (!d) return '—';
-  return d.replace(/-/g, '/');
+// ========== WORKLOAD HELPERS ==========
+function getAssignWeekHours(assign, wk) {
+  if (assign.weeklyHours) return Number(assign.weeklyHours[wk] || 0);
+  return Number(assign.hours || 0);
 }
-
-function formatNum(n, suffix = '') {
-  if (n === '' || n === null || n === undefined) return '—';
-  return Number(n).toLocaleString() + suffix;
+function getProjectWeekRequired(project, wk) {
+  if (project.weeklyHours && project.weeklyHours[wk] !== undefined) return Number(project.weeklyHours[wk]);
+  if (project.startDate && project.endDate && project.requiredHours) {
+    const sm = toWeekKey(getMonday(project.startDate));
+    if (wk >= sm && wk <= project.endDate) return Number(project.requiredHours);
+  }
+  return 0;
 }
-
-function tagsHTML(str) {
-  if (!str) return '<span class="text-muted">—</span>';
-  return str.split(',').map(s => s.trim()).filter(Boolean)
-    .map(s => `<span class="tag">${s}</span>`).join('');
+function getProjectWeekAssigned(pid, wk, assigns) {
+  return assigns.filter(a=>a.projectId===pid).reduce((s,a)=>s+getAssignWeekHours(a,wk),0);
 }
-
-function getAssignedHours(projectId) {
-  return DB.get('assigns').filter(a => a.projectId === projectId).reduce((sum, a) => sum + Number(a.hours), 0);
+function getEngineerWeekAssigned(eid, wk, assigns) {
+  return assigns.filter(a=>a.engineerId===eid).reduce((s,a)=>s+getAssignWeekHours(a,wk),0);
 }
-
-function getEngineerAssignedHours(engineerId) {
-  return DB.get('assigns').filter(a => a.engineerId === engineerId).reduce((sum, a) => sum + Number(a.hours), 0);
-}
-
 function progressClass(assigned, required) {
-  if (required <= 0) return 'progress-ok';
-  const ratio = assigned / required;
-  if (ratio >= 1) return 'progress-ok';
-  if (ratio >= 0.7) return 'progress-warn';
-  return 'progress-over';
+  if (!required) return 'progress-ok';
+  const r=assigned/required;
+  return r>=1?'progress-ok':r>=0.7?'progress-warn':'progress-over';
 }
-
 function workloadClass(assigned, available) {
-  if (assigned > available) return 'progress-over';
-  if (assigned >= available * 0.9) return 'progress-warn';
+  if (assigned>available) return 'progress-over';
+  if (assigned>=available*0.9) return 'progress-warn';
   return 'progress-ok';
 }
-
-// ========== TAB SWITCHING ==========
-function switchTab(tab) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('view-' + tab).classList.add('active');
-  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-  if (tab === 'dashboard') renderDashboard();
-  if (tab === 'projects') renderProjects();
-  if (tab === 'engineers') renderEngineers();
-  if (tab === 'assigns') renderAssigns();
+function summarizeWeekHours(weeklyHours) {
+  const vals = Object.values(weeklyHours||{});
+  if (!vals.length) return '—';
+  const mn=Math.min(...vals), mx=Math.max(...vals);
+  return mn===mx ? `${mn}h/週` : `${mn}〜${mx}h/週`;
+}
+function assignWeekRange(weeklyHours) {
+  const keys = Object.keys(weeklyHours||{}).sort();
+  if (!keys.length) return '—';
+  return keys.length===1 ? formatWeekLabel(keys[0]) : `${formatWeekHdr(keys[0])} 〜 ${formatWeekHdr(keys[keys.length-1])}`;
 }
 
-// ========== MODAL ==========
-let editingProjectId = null;
-let editingEngineerId = null;
+// ========== MIGRATION ==========
+function migrateData() {
+  const projects = DB.get('projects');
+  let pc=false;
+  projects.forEach(p => {
+    if (!p.weeklyHours) {
+      if (p.startDate && p.endDate && p.requiredHours) {
+        p.weeklyHours = {};
+        getWeeksBetween(p.startDate, p.endDate).forEach(w=>{ p.weeklyHours[w]=Number(p.requiredHours); });
+      } else { p.weeklyHours={}; }
+      pc=true;
+    }
+    if (!p.requiredDomains) { p.requiredDomains={}; pc=true; }
+    if (!p.requiredSkills) { p.requiredSkills={}; pc=true; }
+  });
+  if (pc) DB.set('projects', projects);
+
+  const assigns = DB.get('assigns');
+  let ac=false;
+  assigns.forEach(a => {
+    if (!a.weeklyHours) {
+      const proj = projects.find(p=>p.id===a.projectId);
+      a.weeklyHours={};
+      if (proj && proj.startDate && proj.endDate && a.hours) {
+        getWeeksBetween(proj.startDate, proj.endDate).forEach(w=>{ a.weeklyHours[w]=Number(a.hours); });
+      } else if (a.hours) {
+        a.weeklyHours[currentWeekKey()]=Number(a.hours);
+      }
+      ac=true;
+    }
+  });
+  if (ac) DB.set('assigns', assigns);
+
+  const engineers = DB.get('engineers');
+  let ec=false;
+  engineers.forEach(e => {
+    if (!e.domainSkills) { e.domainSkills={}; ec=true; }
+    if (!e.mainSkills) { e.mainSkills={}; ec=true; }
+  });
+  if (ec) DB.set('engineers', engineers);
+}
+
+// ========== TAB ==========
+function switchTab(tab) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+tab).classList.add('active');
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+  if (tab==='dashboard') renderDashboard();
+  if (tab==='projects') renderProjects();
+  if (tab==='engineers') renderEngineers();
+  if (tab==='assigns') renderAssigns();
+  if (tab==='timeline') renderTimeline();
+}
+
+// ========== MODALS ==========
+let editingProjectId=null, editingEngineerId=null, editingAssignId=null;
+let qaProjectId=null, qaEngineerId=null;
 
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
-  editingProjectId = null;
-  editingEngineerId = null;
+  editingProjectId=editingEngineerId=editingAssignId=null;
+}
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click', e=>{ if(e.target===o) o.classList.remove('open'); });
+});
+
+// ========== SKILL UI ==========
+function buildSkillRows(containerId, items, selectedMap, levelSuffix) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = items.map(skill => {
+    const lv = selectedMap && selectedMap[skill] ? selectedMap[skill] : '';
+    const chk = !!lv;
+    const opts = LEVELS.map(l=>`<option value="${l}" ${l===lv?'selected':''}>${l}${levelSuffix||''}</option>`).join('');
+    return `<div class="skill-row">
+      <label class="skill-check">
+        <input type="checkbox" class="skill-cb" data-skill="${esc(skill)}" ${chk?'checked':''} onchange="onSkillCb(this)">
+        <span>${esc(skill)}</span>
+      </label>
+      <select class="skill-level" style="visibility:${chk?'visible':'hidden'}">${opts}</select>
+    </div>`;
+  }).join('');
+}
+function onSkillCb(cb) {
+  cb.closest('.skill-row').querySelector('.skill-level').style.visibility = cb.checked ? 'visible' : 'hidden';
+}
+function collectSkills(containerId) {
+  const map={};
+  document.querySelectorAll(`#${containerId} .skill-row`).forEach(row=>{
+    const cb=row.querySelector('.skill-cb'), sel=row.querySelector('.skill-level');
+    if (cb && cb.checked) map[cb.dataset.skill]=sel?sel.value:'G1';
+  });
+  return map;
 }
 
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
-});
+// ========== PROJECT WEEK TABLE ==========
+function updateProjectWeekTable() {
+  const s=document.getElementById('p-start').value, e=document.getElementById('p-end').value;
+  const c=document.getElementById('p-week-container');
+  if (!s||!e||s>e) {
+    c.innerHTML='<div class="text-muted text-sm" style="padding:8px">開始日と終了予定日を入力すると週次工数を設定できます</div>';
+    return;
+  }
+  const weeks=getWeeksBetween(s,e);
+  if (!weeks.length) { c.innerHTML='<div class="text-muted text-sm" style="padding:8px">対象週がありません</div>'; return; }
+  const existMap = collectProjectWeekHours();
+  c.innerHTML=`<div class="week-bulk-row">
+    <input type="number" id="p-bulk-h" min="0" placeholder="一括工数（h/週）">
+    <button class="btn btn-secondary btn-sm" onclick="setAllProjectWeekHours()">全週に設定</button>
+  </div>
+  <div class="week-table-container"><div class="week-rows" id="p-week-rows">
+    ${weeks.map(w=>`<div class="week-row">
+      <span class="week-label">${formatWeekLabel(w)}</span>
+      <div class="week-input-wrap">
+        <input type="number" class="week-input" data-week="${w}" min="0" value="${existMap[w]!==undefined?existMap[w]:''}" placeholder="0">
+        <span class="week-unit">h/週</span>
+      </div>
+    </div>`).join('')}
+  </div></div>`;
+}
+function setAllProjectWeekHours() {
+  const v=document.getElementById('p-bulk-h').value;
+  if (!v) return;
+  document.querySelectorAll('#p-week-rows .week-input').forEach(i=>{ i.value=v; });
+}
+function collectProjectWeekHours() {
+  const m={};
+  document.querySelectorAll('#p-week-rows .week-input').forEach(i=>{ if(i.value!=='') m[i.dataset.week]=Number(i.value); });
+  return m;
+}
 
 // ========== DASHBOARD ==========
 function renderDashboard() {
-  const projects = DB.get('projects');
-  const engineers = DB.get('engineers');
-  const assigns = DB.get('assigns');
+  const projects=DB.get('projects'), engineers=DB.get('engineers'), assigns=DB.get('assigns');
+  const wk=currentWeekKey();
+  const juchu=projects.filter(p=>p.status==='受注済み');
+  const mikomi=projects.filter(p=>p.status==='受注見込み');
+  const totalAvail=engineers.reduce((s,e)=>s+Number(e.availableHours||0),0);
+  const totalAssigned=engineers.reduce((s,e)=>s+getEngineerWeekAssigned(e.id,wk,assigns),0);
 
-  const juchu = projects.filter(p => p.status === '受注済み');
-  const mikomi = projects.filter(p => p.status === '受注見込み');
-  const juchuHours = juchu.reduce((s, p) => s + Number(p.requiredHours || 0), 0);
-  const mikomiHours = mikomi.reduce((s, p) => s + Number(p.requiredHours || 0), 0);
-
-  // KPIs
-  const totalAvailable = engineers.reduce((s, e) => s + Number(e.availableHours || 0), 0);
-  const totalAssigned = assigns.reduce((s, a) => s + Number(a.hours), 0);
-
-  document.getElementById('dash-kpi').innerHTML = `
-    <div class="kpi-card kpi-card-blue">
-      <div class="kpi-label">受注済み案件</div>
-      <div class="kpi-value">${juchu.length}<span class="kpi-unit">件</span></div>
-      <div class="kpi-sub">必要工数: ${juchuHours}時間/週</div>
-    </div>
-    <div class="kpi-card kpi-card-green">
-      <div class="kpi-label">受注見込み案件</div>
-      <div class="kpi-value">${mikomi.length}<span class="kpi-unit">件</span></div>
-      <div class="kpi-sub">必要工数: ${mikomiHours}時間/週</div>
-    </div>
-    <div class="kpi-card kpi-card-yellow">
-      <div class="kpi-label">エンジニア総稼働可能工数</div>
-      <div class="kpi-value">${totalAvailable}<span class="kpi-unit">h/週</span></div>
-      <div class="kpi-sub">アサイン済み: ${totalAssigned}時間/週</div>
-    </div>
-    <div class="kpi-card kpi-card-red">
-      <div class="kpi-label">空き工数合計</div>
-      <div class="kpi-value">${Math.max(0, totalAvailable - totalAssigned)}<span class="kpi-unit">h/週</span></div>
-      <div class="kpi-sub">稼働率: ${totalAvailable > 0 ? Math.round(totalAssigned / totalAvailable * 100) : 0}%</div>
-    </div>
+  document.getElementById('dash-kpi').innerHTML=`
+    <div class="kpi-card kpi-card-blue"><div class="kpi-label">受注済み案件</div><div class="kpi-value">${juchu.length}<span class="kpi-unit">件</span></div><div class="kpi-sub">今週必要: ${juchu.reduce((s,p)=>s+getProjectWeekRequired(p,wk),0)}h</div></div>
+    <div class="kpi-card kpi-card-green"><div class="kpi-label">受注見込み案件</div><div class="kpi-value">${mikomi.length}<span class="kpi-unit">件</span></div><div class="kpi-sub">今週必要: ${mikomi.reduce((s,p)=>s+getProjectWeekRequired(p,wk),0)}h</div></div>
+    <div class="kpi-card kpi-card-yellow"><div class="kpi-label">エンジニア稼働可能（今週）</div><div class="kpi-value">${totalAvail}<span class="kpi-unit">h/週</span></div><div class="kpi-sub">アサイン済み: ${totalAssigned}h</div></div>
+    <div class="kpi-card kpi-card-red"><div class="kpi-label">空き工数（今週）</div><div class="kpi-value">${Math.max(0,totalAvail-totalAssigned)}<span class="kpi-unit">h</span></div><div class="kpi-sub">稼働率: ${totalAvail>0?Math.round(totalAssigned/totalAvail*100):0}%</div></div>
   `;
 
-  // 工数不足アラート（受注済み・受注見込みのみ）
-  const activeProjects = projects.filter(p => p.status === '受注済み' || p.status === '受注見込み');
-  const shortageProjects = activeProjects
-    .map(p => ({ ...p, assigned: getAssignedHours(p.id), shortage: (p.requiredHours || 0) - getAssignedHours(p.id) }))
-    .filter(p => p.shortage > 0)
-    .sort((a, b) => b.shortage - a.shortage);
+  // 今週の工数不足案件
+  const active=projects.filter(p=>p.status==='受注済み'||p.status==='受注見込み');
+  const shortage=active.map(p=>({...p,req:getProjectWeekRequired(p,wk),asgn:getProjectWeekAssigned(p.id,wk,assigns)}))
+    .filter(p=>p.req>0&&p.asgn<p.req).sort((a,b)=>(b.req-b.asgn)-(a.req-a.asgn));
+  const alertsEl=document.getElementById('dash-alerts');
+  if (!shortage.length) alertsEl.innerHTML=`<div class="alert alert-success">✓ 今週は全案件の工数が充足しています</div>`;
+  else alertsEl.innerHTML=shortage.map(p=>`<div class="alert-item">
+    <div class="alert-item-info"><div class="alert-item-name">${esc(p.name)}</div><div class="alert-item-client">🏢 ${esc(p.client)} ${statusBadge(p.status)}</div></div>
+    <div class="alert-item-hours">不足: ${p.req-p.asgn}h<br><span style="font-size:11px;font-weight:400;color:var(--gray-500)">${p.asgn}/${p.req}h</span></div>
+  </div>`).join('');
 
-  const alertsEl = document.getElementById('dash-alerts');
-  if (shortageProjects.length === 0) {
-    alertsEl.innerHTML = `<div class="alert alert-success">✓ 全案件の工数が充足しています</div>`;
-  } else {
-    alertsEl.innerHTML = shortageProjects.map(p => `
-      <div class="alert-item">
-        <div class="alert-item-info">
-          <div class="alert-item-name">${p.name}</div>
-          <div class="alert-item-client">🏢 ${p.client} &nbsp;|&nbsp; ${statusBadge(p.status)}</div>
-        </div>
-        <div class="alert-item-hours">不足: ${p.shortage}h/週<br><span style="font-size:11px;font-weight:400;color:var(--gray-500)">${p.assigned}/${p.requiredHours}h アサイン済み</span></div>
-        <button class="btn btn-secondary btn-sm" onclick="switchTab('projects')">案件へ</button>
+  // 今週空きのあるエンジニア（稼働率80%未満）
+  const avails=engineers.map(e=>{
+    const avl=Number(e.availableHours||0), asgn=getEngineerWeekAssigned(e.id,wk,assigns);
+    return {...e,avl,asgn,free:avl-asgn,rate:avl>0?Math.round(asgn/avl*100):0};
+  }).filter(e=>e.avl>0&&e.asgn<e.avl*0.8).sort((a,b)=>b.free-a.free);
+  const availEl=document.getElementById('dash-avail');
+  if (!avails.length) availEl.innerHTML=`<div class="alert alert-warning">今週は稼働率80%未満のエンジニアはいません</div>`;
+  else availEl.innerHTML=avails.map(e=>`<div class="avail-card">
+    <div class="alert-item-info"><div class="alert-item-name">👤 ${esc(e.name)}</div><div class="alert-item-client">${esc(e.employmentType)} / 稼働可能 ${e.avl}h/週</div></div>
+    <div style="text-align:right;font-size:12px"><span style="font-weight:700;color:var(--success)">空き ${e.free}h</span><br><span style="color:var(--gray-400)">${e.rate}%稼働</span></div>
+  </div>`).join('');
+
+  // エンジニア稼働サマリー
+  const engWl=engineers.map(e=>{
+    const avl=Number(e.availableHours||0), asgn=getEngineerWeekAssigned(e.id,wk,assigns);
+    return {...e,avl,asgn,free:avl-asgn};
+  }).sort((a,b)=>b.free-a.free);
+  const wlEl=document.getElementById('dash-workload');
+  if (!engWl.length) { wlEl.innerHTML='<div class="text-muted text-sm">エンジニアが登録されていません</div>'; return; }
+  wlEl.innerHTML=engWl.map(e=>{
+    const isOver=e.asgn>e.avl, ratio=e.avl>0?Math.min(e.asgn/e.avl,1.2):0;
+    const barW=Math.min(ratio*100,100), wClass=workloadClass(e.asgn,e.avl), pct=e.avl>0?Math.round(e.asgn/e.avl*100):0;
+    return `<div class="workload-card${isOver?' card-over':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="workload-card-name">👤 ${esc(e.name)}</div>
+        ${isOver?`<span class="badge chip-ng" style="font-size:10px">⚠超過</span>`:`<span class="badge chip-ok" style="font-size:10px">${pct}%</span>`}
       </div>
-    `).join('');
-  }
-
-  // エンジニア稼働サマリー（空き工数の多い順）
-  const engWorkload = engineers.map(e => {
-    const assigned = getEngineerAssignedHours(e.id);
-    const available = Number(e.availableHours || 0);
-    return { ...e, assigned, available, free: available - assigned };
-  }).sort((a, b) => b.free - a.free);
-
-  const workloadEl = document.getElementById('dash-workload');
-  if (engWorkload.length === 0) {
-    workloadEl.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-text">エンジニアが登録されていません</div></div></div>`;
-    return;
-  }
-
-  workloadEl.innerHTML = engWorkload.map(e => {
-    const ratio = e.available > 0 ? Math.min(e.assigned / e.available, 1.2) : 0;
-    const barWidth = Math.min(ratio * 100, 100);
-    const wClass = workloadClass(e.assigned, e.available);
-    const isOver = e.assigned > e.available;
-    const utilizationPct = e.available > 0 ? Math.round(e.assigned / e.available * 100) : 0;
-    return `<div class="workload-card${isOver ? ' card-over' : ''}">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <div class="workload-card-name">👤 ${e.name}</div>
-        ${isOver ? `<span class="badge chip-ng" style="font-size:10px">⚠ 超過</span>` : `<span class="badge chip-ok" style="font-size:10px">✓ ${utilizationPct}%</span>`}
-      </div>
-      <div class="workload-card-sub">${e.employmentType} / 稼働可能 ${e.available}h/週</div>
+      <div class="workload-card-sub">${esc(e.employmentType)} / ${e.avl}h/週</div>
       <div class="${wClass} progress-wrap">
-        <div class="progress-bar-bg" style="height:6px">
-          <div class="progress-bar-fill" style="width:${barWidth}%"></div>
-        </div>
-        <span class="progress-label" style="min-width:60px">${e.assigned}/${e.available}h</span>
+        <div class="progress-bar-bg" style="height:6px"><div class="progress-bar-fill" style="width:${barW}%"></div></div>
+        <span class="progress-label" style="min-width:55px">${e.asgn}/${e.avl}h</span>
       </div>
-      <div style="margin-top:6px;font-size:11px;color:${e.free > 0 ? 'var(--success)' : 'var(--danger)'}">空き: ${Math.max(0, e.free)}h/週</div>
+      <div style="margin-top:4px;font-size:11px;color:${e.free>0?'var(--success)':'var(--danger)'}">空き: ${Math.max(0,e.free)}h</div>
     </div>`;
   }).join('');
 }
 
 // ========== PROJECTS ==========
-function openProjectModal(id = null) {
-  editingProjectId = id;
-  document.getElementById('project-modal-title').textContent = id ? '案件編集' : '案件登録';
-  const fields = ['p-name','p-client','p-status','p-start','p-end','p-required-hours','p-revenue','p-unit-price','p-skills','p-notes'];
-
-  if (id) {
-    const p = DB.get('projects').find(x => x.id === id);
-    document.getElementById('p-name').value = p.name || '';
-    document.getElementById('p-client').value = p.client || '';
-    document.getElementById('p-status').value = p.status || '受注済み';
-    document.getElementById('p-start').value = p.startDate || '';
-    document.getElementById('p-end').value = p.endDate || '';
-    document.getElementById('p-required-hours').value = p.requiredHours || '';
-    document.getElementById('p-revenue').value = p.revenue || '';
-    document.getElementById('p-unit-price').value = p.unitPrice || '';
-    document.getElementById('p-skills').value = p.skills || '';
-    document.getElementById('p-notes').value = p.notes || '';
+function openProjectModal(id=null) {
+  editingProjectId=id;
+  document.getElementById('project-modal-title').textContent=id?'案件編集':'案件登録';
+  const p=id?DB.get('projects').find(x=>x.id===id):null;
+  document.getElementById('p-name').value=p?.name||'';
+  document.getElementById('p-client').value=p?.client||'';
+  document.getElementById('p-status').value=p?.status||'受注済み';
+  document.getElementById('p-start').value=p?.startDate||'';
+  document.getElementById('p-end').value=p?.endDate||'';
+  document.getElementById('p-revenue').value=p?.revenue||'';
+  document.getElementById('p-notes').value=p?.notes||'';
+  buildSkillRows('p-domain-skills', DOMAINS, p?.requiredDomains||{}, '以上');
+  buildSkillRows('p-main-skills', SKILLS, p?.requiredSkills||{}, '以上');
+  // Week table
+  if (p?.startDate && p?.endDate) {
+    // pre-load existing weeklyHours
+    setTimeout(()=>{
+      updateProjectWeekTable();
+      if (p.weeklyHours) {
+        document.querySelectorAll('#p-week-rows .week-input').forEach(inp=>{
+          if (p.weeklyHours[inp.dataset.week]!==undefined) inp.value=p.weeklyHours[inp.dataset.week];
+        });
+      }
+    }, 10);
   } else {
-    fields.forEach(f => {
-      const el = document.getElementById(f);
-      if (el.tagName === 'SELECT') el.selectedIndex = 0;
-      else el.value = '';
-    });
+    document.getElementById('p-week-container').innerHTML='<div class="text-muted text-sm" style="padding:8px">開始日と終了予定日を入力すると週次工数を設定できます</div>';
   }
   openModal('project-modal');
 }
-
 function saveProject() {
-  const name = document.getElementById('p-name').value.trim();
-  const client = document.getElementById('p-client').value.trim();
-  const requiredHours = document.getElementById('p-required-hours').value;
+  const name=document.getElementById('p-name').value.trim();
+  const client=document.getElementById('p-client').value.trim();
   if (!name) { alert('案件名を入力してください'); return; }
   if (!client) { alert('クライアント名を入力してください'); return; }
-  if (!requiredHours) { alert('必要工数を入力してください'); return; }
-
-  const projects = DB.get('projects');
-  const data = {
+  const projects=DB.get('projects');
+  const data={
     name, client,
     status: document.getElementById('p-status').value,
     startDate: document.getElementById('p-start').value,
     endDate: document.getElementById('p-end').value,
-    requiredHours: Number(requiredHours),
     revenue: document.getElementById('p-revenue').value,
-    unitPrice: document.getElementById('p-unit-price').value,
-    skills: document.getElementById('p-skills').value,
+    weeklyHours: collectProjectWeekHours(),
+    requiredDomains: collectSkills('p-domain-skills'),
+    requiredSkills: collectSkills('p-main-skills'),
     notes: document.getElementById('p-notes').value,
   };
-
   if (editingProjectId) {
-    const idx = projects.findIndex(x => x.id === editingProjectId);
-    projects[idx] = { ...projects[idx], ...data };
-  } else {
-    data.id = DB.nextId('projects');
-    projects.push(data);
-  }
-  DB.set('projects', projects);
+    const idx=projects.findIndex(x=>x.id===editingProjectId);
+    projects[idx]={...projects[idx],...data};
+  } else { data.id=DB.nextId('projects'); projects.push(data); }
+  DB.set('projects',projects);
   closeModal('project-modal');
   renderProjects();
 }
-
 function deleteProject(id) {
-  if (!confirm('この案件を削除しますか？\nアサイン情報も削除されます。')) return;
-  DB.set('projects', DB.get('projects').filter(p => p.id !== id));
-  DB.set('assigns', DB.get('assigns').filter(a => a.projectId !== id));
+  if (!confirm('この案件を削除しますか？アサイン情報も削除されます。')) return;
+  DB.set('projects',DB.get('projects').filter(p=>p.id!==id));
+  DB.set('assigns',DB.get('assigns').filter(a=>a.projectId!==id));
   renderProjects();
 }
-
 function renderProjects() {
-  const grid = document.getElementById('projects-grid');
-  const search = document.getElementById('project-search').value.toLowerCase();
-  const statusFilter = document.getElementById('project-status-filter').value;
-  let projects = DB.get('projects');
-
-  if (search) projects = projects.filter(p =>
-    p.name.toLowerCase().includes(search) || p.client.toLowerCase().includes(search));
-  if (statusFilter) projects = projects.filter(p => p.status === statusFilter);
-
-  if (projects.length === 0) {
-    grid.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="empty-state">
-      <div class="empty-state-icon">📋</div>
-      <div class="empty-state-text">案件が登録されていません</div>
-      <div class="empty-state-sub">「新規案件登録」から追加してください</div>
-    </div></div>`;
+  const grid=document.getElementById('projects-grid');
+  const search=document.getElementById('project-search').value.toLowerCase();
+  const sf=document.getElementById('project-status-filter').value;
+  let projects=DB.get('projects');
+  if (search) projects=projects.filter(p=>p.name.toLowerCase().includes(search)||p.client.toLowerCase().includes(search));
+  if (sf) projects=projects.filter(p=>p.status===sf);
+  if (!projects.length) {
+    grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">案件が登録されていません</div></div></div>`;
     return;
   }
-
-  const assigns = DB.get('assigns');
-  const engineers = DB.get('engineers');
-
-  grid.innerHTML = projects.map(p => {
-    const assignedHours = assigns.filter(a => a.projectId === p.id).reduce((sum, a) => sum + Number(a.hours), 0);
-    const req = p.requiredHours || 0;
-    const ratio = req > 0 ? Math.min(assignedHours / req, 1) : 1;
-    const pClass = progressClass(assignedHours, req);
-    const barWidth = Math.min(ratio * 100, 100);
-
-    const projectAssigns = assigns.filter(a => a.projectId === p.id);
-    const assignHTML = projectAssigns.length > 0
-      ? projectAssigns.map(a => {
-          const eng = engineers.find(e => e.id === a.engineerId);
-          if (!eng) return '';
-          const roleLabel = a.role ? `<span style="font-size:11px;color:var(--gray-400);margin-left:4px">[${a.role}]</span>` : '';
-          return `<div class="assign-item">
-            <span class="assign-item-name">👤 ${eng.name}${roleLabel}</span>
-            <span class="assign-item-hours">${a.hours}h/週</span>
-          </div>`;
-        }).join('')
-      : '<div class="text-muted text-sm">アサイン未登録</div>';
-
-    const statusOK = assignedHours >= req;
-    const alertBadge = req > 0
-      ? `<span class="badge ${statusOK ? 'chip-ok' : 'chip-ng'}" style="font-size:11px">${statusOK ? '✓ 充足' : '⚠ 不足'}</span>`
-      : '';
-
+  const assigns=DB.get('assigns'), engineers=DB.get('engineers'), wk=currentWeekKey();
+  grid.innerHTML=projects.map(p=>{
+    const req=getProjectWeekRequired(p,wk), asgn=getProjectWeekAssigned(p.id,wk,assigns);
+    const ratio=req>0?Math.min(asgn/req,1):1, pClass=progressClass(asgn,req), barW=Math.min(ratio*100,100);
+    const statusOK=asgn>=req;
+    const alertBadge=req>0?`<span class="badge ${statusOK?'chip-ok':'chip-ng'}" style="font-size:10px">${statusOK?'✓充足':'⚠不足'}</span>`:'';
+    const pas=assigns.filter(a=>a.projectId===p.id);
+    const assignHTML=pas.length?pas.map(a=>{
+      const eng=engineers.find(e=>e.id===a.engineerId);
+      if(!eng) return '';
+      const h=getAssignWeekHours(a,wk);
+      return `<div class="assign-item"><span class="assign-item-name">👤 ${esc(eng.name)}${a.role?` <span style="font-size:10px;color:var(--gray-400)">[${esc(a.role)}]</span>`:''}</span><span class="assign-item-hours">${h}h/週</span></div>`;
+    }).join(''):'<div class="text-muted text-sm">アサイン未登録</div>';
+    const hasReqSkills=Object.keys(p.requiredDomains||{}).length+Object.keys(p.requiredSkills||{}).length>0||p.skills;
     return `<div class="card">
       <div class="card-header">
         <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-            <span style="font-size:15px;font-weight:700;color:var(--gray-900)">${p.name}</span>
-            ${statusBadge(p.status)}
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px">
+            <span style="font-size:15px;font-weight:700">${esc(p.name)}</span>${statusBadge(p.status)}
           </div>
-          <div style="font-size:12px;color:var(--gray-500)">🏢 ${p.client}</div>
+          <div style="font-size:12px;color:var(--gray-500)">🏢 ${esc(p.client)}</div>
         </div>
         <div class="actions" style="flex-shrink:0">
           <button class="btn btn-secondary btn-sm" onclick="openProjectModal(${p.id})">編集</button>
@@ -1005,263 +938,182 @@ function renderProjects() {
       </div>
       <div class="card-body">
         <div class="info-grid" style="margin-bottom:10px">
-          <div class="info-item">
-            <span class="info-label">期間</span>
-            <span class="info-value">${formatDate(p.startDate)} 〜 ${formatDate(p.endDate)}</span>
-          </div>
-          <div class="info-item">
-            <span class="info-label">必要工数</span>
-            <span class="info-value">${p.requiredHours}時間/週</span>
-          </div>
-          ${p.revenue ? `<div class="info-item"><span class="info-label">売上</span><span class="info-value">${formatNum(p.revenue, '万円/月')}</span></div>` : ''}
-          ${p.unitPrice ? `<div class="info-item"><span class="info-label">単価</span><span class="info-value">${formatNum(p.unitPrice, '円/時')}</span></div>` : ''}
+          <div class="info-item"><span class="info-label">期間</span><span class="info-value">${fmtDate(p.startDate)} 〜 ${fmtDate(p.endDate)}</span></div>
+          <div class="info-item"><span class="info-label">今週必要工数</span><span class="info-value">${req?req+'h/週':'—'}</span></div>
+          ${p.revenue?`<div class="info-item"><span class="info-label">売上</span><span class="info-value">${fmtNum(p.revenue,'万円/月')}</span></div>`:''}
         </div>
-
-        ${p.skills ? `<div style="margin-bottom:10px"><div class="info-label" style="margin-bottom:4px">必要スキル</div><div class="tags">${tagsHTML(p.skills)}</div></div>` : ''}
-
-        <div style="margin-bottom:10px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-            <span class="info-label">アサイン工数</span>
-            ${alertBadge}
-          </div>
-          <div class="${pClass} progress-wrap">
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width:${barWidth}%"></div>
-            </div>
-            <span class="progress-label">${assignedHours} / ${req}h</span>
-          </div>
-        </div>
-
-        <div style="margin-bottom:10px">
-          <div class="info-label" style="margin-bottom:6px">アサインメンバー</div>
-          <div class="assign-list">${assignHTML}</div>
-        </div>
-
+        ${hasReqSkills?`<div style="margin-bottom:10px"><div class="info-label" style="margin-bottom:4px">必要スキル</div><div class="tags">${reqSkillTagsHTML(p.requiredDomains,p.requiredSkills)}</div></div>`:''}
+        ${req>0?`<div style="margin-bottom:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><span class="info-label">今週アサイン工数</span>${alertBadge}</div>
+          <div class="${pClass} progress-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${barW}%"></div></div><span class="progress-label">${asgn}/${req}h</span></div>
+        </div>`:''}
+        <div style="margin-bottom:10px"><div class="info-label" style="margin-bottom:5px">アサインメンバー（今週）</div><div class="assign-list">${assignHTML}</div></div>
         <button class="btn btn-success btn-sm" style="width:100%;justify-content:center" onclick="openCandidateModal(${p.id})">🔍 候補者を探す</button>
-
-        ${p.notes ? `<div style="margin-top:10px;padding:8px 10px;background:var(--gray-50);border-radius:6px;font-size:12px;color:var(--gray-600)">${p.notes}</div>` : ''}
+        ${p.notes?`<div style="margin-top:10px;padding:7px 10px;background:var(--gray-50);border-radius:6px;font-size:12px;color:var(--gray-600)">${esc(p.notes)}</div>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
-// ========== CANDIDATE SEARCH ==========
-let candidateProjectId = null;
-let quickAssignProjectId = null;
-let quickAssignEngineerId = null;
-
+// ========== CANDIDATE MATCHING ==========
 function openCandidateModal(projectId) {
-  candidateProjectId = projectId;
-  const projects = DB.get('projects');
-  const engineers = DB.get('engineers');
-  const assigns = DB.get('assigns');
-  const p = projects.find(x => x.id === projectId);
+  const projects=DB.get('projects'), engineers=DB.get('engineers'), assigns=DB.get('assigns');
+  const p=projects.find(x=>x.id===projectId);
   if (!p) return;
+  const wk=currentWeekKey();
+  const alreadyIds=assigns.filter(a=>a.projectId===projectId).map(a=>a.engineerId);
+  const reqD=p.requiredDomains||{}, reqS=p.requiredSkills||{};
+  const totalReq=Object.keys(reqD).length+Object.keys(reqS).length;
 
-  document.getElementById('candidate-modal-title').textContent = `候補エンジニア — ${p.name}`;
+  const scored=engineers.map(e=>{
+    const ed=e.domainSkills||{}, es=e.mainSkills||{};
+    let matchCnt=0, matchedItems=[];
+    Object.entries(reqD).forEach(([k,rv])=>{
+      const ev=ed[k]; const ok=ev&&levelIndex(ev)>=levelIndex(rv);
+      if(ok) matchCnt++;
+      matchedItems.push({name:k,engLv:ev||null,reqLv:rv,ok});
+    });
+    Object.entries(reqS).forEach(([k,rv])=>{
+      const ev=es[k]; const ok=ev&&levelIndex(ev)>=levelIndex(rv);
+      if(ok) matchCnt++;
+      matchedItems.push({name:k,engLv:ev||null,reqLv:rv,ok});
+    });
+    // Legacy text match if no new skills defined
+    if (!totalReq && p.skills) {
+      const req2=p.skills.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+      const str=(e.skills||'').toLowerCase();
+      matchCnt=req2.filter(r=>str.includes(r)).length;
+    }
+    const asgn=getEngineerWeekAssigned(e.id,wk,assigns), avl=Number(e.availableHours||0), free=avl-asgn;
+    return {...e, matchCnt, matchedItems, asgn, avl, free, isAssigned:alreadyIds.includes(e.id)};
+  }).sort((a,b)=>b.matchCnt-a.matchCnt||b.free-a.free);
 
-  const requiredSkills = p.skills ? p.skills.split(',').map(s => s.trim().toLowerCase()).filter(Boolean) : [];
-  const alreadyAssigned = assigns.filter(a => a.projectId === projectId).map(a => a.engineerId);
+  document.getElementById('candidate-modal-title').textContent=`候補エンジニア — ${p.name}`;
+  document.getElementById('candidate-project-info').innerHTML=`📋 <strong>${esc(p.name)}</strong> &nbsp;|&nbsp; 必要スキル: ${reqSkillTagsHTML(reqD,reqS)}`;
 
-  // スキルマッチ度でソート
-  const scored = engineers.map(e => {
-    const engSkills = e.skills ? e.skills.split(',').map(s => s.trim().toLowerCase()) : [];
-    const matchCount = requiredSkills.filter(rs => engSkills.some(es => es.includes(rs) || rs.includes(es))).length;
-    const assigned = getEngineerAssignedHours(e.id);
-    const available = Number(e.availableHours || 0);
-    const free = available - assigned;
-    return { ...e, matchCount, assigned, available, free, isAssigned: alreadyAssigned.includes(e.id) };
-  }).sort((a, b) => b.matchCount - a.matchCount || b.free - a.free);
-
-  document.getElementById('candidate-project-info').innerHTML =
-    `📋 <strong>${p.name}</strong> &nbsp;|&nbsp; 必要スキル: ${p.skills || '未設定'} &nbsp;|&nbsp; 必要工数: ${p.requiredHours}h/週`;
-
-  if (scored.length === 0) {
-    document.getElementById('candidate-list').innerHTML = `<div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-text">エンジニアが登録されていません</div></div>`;
-  } else {
-    document.getElementById('candidate-list').innerHTML = scored.map(e => {
-      const matchLabel = requiredSkills.length > 0
-        ? `スキルマッチ: ${e.matchCount}/${requiredSkills.length}`
-        : 'スキル条件なし';
-      const freeClass = e.free > 10 ? 'avail-ok' : e.free > 0 ? 'avail-low' : 'avail-none';
-      const freeLabel = e.free > 0 ? `空き ${e.free}h/週` : e.free === 0 ? '空き 0h' : '超過';
-      const assignedBadge = e.isAssigned
-        ? `<span class="badge chip-ok" style="font-size:11px;margin-left:6px">アサイン済</span>`
-        : '';
-
-      const skillTags = e.skills
-        ? e.skills.split(',').map(s => {
-            const skill = s.trim();
-            const isMatch = requiredSkills.some(rs => skill.toLowerCase().includes(rs) || rs.includes(skill.toLowerCase()));
-            return `<span class="tag" style="${isMatch ? 'background:#dcfce7;color:#166534;border:1px solid #86efac' : ''}">${skill}</span>`;
-          }).join('')
-        : '<span class="text-muted">スキル未登録</span>';
-
-      return `<div class="candidate-item">
-        <div class="candidate-info">
-          <div class="candidate-name">👤 ${e.name} ${assignedBadge}
-            ${requiredSkills.length > 0 ? `<span style="font-size:11px;color:${e.matchCount > 0 ? 'var(--success)' : 'var(--gray-400)'};margin-left:8px">${matchLabel}</span>` : ''}
-          </div>
-          <div style="margin-top:4px"><div class="tags">${skillTags}</div></div>
-          <div class="candidate-skills" style="margin-top:4px">${e.employmentType} / 稼働可能 ${e.available}h/週 / アサイン済み ${e.assigned}h/週</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
-          <span class="candidate-avail ${freeClass}">${freeLabel}</span>
-          ${e.isAssigned
-            ? `<button class="btn btn-secondary btn-sm" disabled style="opacity:0.5">アサイン済</button>`
-            : `<button class="btn btn-primary btn-sm" onclick="openQuickAssign(${projectId}, ${e.id}, '${e.name.replace(/'/g, "\\'")}')">アサイン</button>`
-          }
-        </div>
-      </div>`;
-    }).join('');
-  }
+  document.getElementById('candidate-list').innerHTML=scored.length?scored.map(e=>{
+    const freeClass=e.free>10?'candidate-avail-ok':e.free>0?'candidate-avail-low':'candidate-avail-none';
+    const freeLabel=e.free>0?`空き ${e.free}h/週`:e.free===0?'空き 0h':'超過';
+    const matchBar=totalReq>0?`<span style="font-size:11px;color:${e.matchCnt>0?'var(--success)':'var(--gray-400)'}">マッチ: ${e.matchCnt}/${totalReq}</span>`:'';
+    const skillTags=e.matchedItems.map(item=>`<span class="tag" style="${item.ok?'background:#dcfce7;color:#166534;border:1px solid #86efac':''}">${esc(item.name)} ${item.engLv?`<span class="tag-level">${item.engLv}</span>`:''}</span>`).join('');
+    const allSkillTags=skillTagsHTML(e.domainSkills,e.mainSkills,e.skills);
+    return `<div class="candidate-item">
+      <div class="candidate-info">
+        <div class="candidate-name">👤 ${esc(e.name)} ${e.isAssigned?`<span class="badge chip-ok" style="font-size:10px">アサイン済</span>`:''} ${matchBar}</div>
+        <div class="tags" style="margin:4px 0">${e.matchedItems.length?skillTags:allSkillTags}</div>
+        <div style="font-size:11px;color:var(--gray-500)">${esc(e.employmentType)} / 稼働可能 ${e.avl}h/週 / 今週アサイン ${e.asgn}h</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
+        <span class="${freeClass}" style="font-size:12px">${freeLabel}</span>
+        ${e.isAssigned
+          ?`<button class="btn btn-secondary btn-sm" disabled style="opacity:.5">アサイン済</button>`
+          :`<button class="btn btn-primary btn-sm" onclick="openQuickAssign(${p.id},${e.id},'${esc(e.name)}')">アサイン</button>`}
+      </div>
+    </div>`;
+  }).join(''):'<div class="empty-state" style="padding:24px"><div class="empty-state-text">エンジニアが登録されていません</div></div>';
 
   openModal('candidate-modal');
 }
-
-function openQuickAssign(projectId, engineerId, engineerName) {
-  quickAssignProjectId = projectId;
-  quickAssignEngineerId = engineerId;
-  const p = DB.get('projects').find(x => x.id === projectId);
-  document.getElementById('qa-title').textContent = `アサイン登録 — ${engineerName}`;
-  document.getElementById('qa-info').innerHTML = `👤 <strong>${engineerName}</strong> を 📋 <strong>${p ? p.name : ''}</strong> にアサインします`;
-  document.getElementById('qa-hours').value = '';
-  document.getElementById('qa-role').selectedIndex = 0;
+function openQuickAssign(pid,eid,eName) {
+  qaProjectId=pid; qaEngineerId=eid;
+  const p=DB.get('projects').find(x=>x.id===pid);
+  document.getElementById('qa-title').textContent=`アサイン登録 — ${eName}`;
+  document.getElementById('qa-info').innerHTML=`👤 <strong>${esc(eName)}</strong> を 📋 <strong>${p?esc(p.name):''}</strong> にアサイン`;
+  document.getElementById('qa-hours').value='';
   closeModal('candidate-modal');
   openModal('quick-assign-modal');
 }
-
 function confirmQuickAssign() {
-  const hours = Number(document.getElementById('qa-hours').value);
-  const role = document.getElementById('qa-role').value;
-  if (!hours || hours <= 0) { alert('週次稼働工数を入力してください'); return; }
-
-  const assigns = DB.get('assigns');
-  const existing = assigns.find(a => a.projectId === quickAssignProjectId && a.engineerId === quickAssignEngineerId);
-  if (existing) {
-    if (!confirm('このエンジニアはすでにこの案件にアサインされています。\n工数を上書きしますか？')) return;
-    existing.hours = hours;
-    existing.role = role;
-  } else {
-    assigns.push({ id: DB.nextId('assigns'), projectId: quickAssignProjectId, engineerId: quickAssignEngineerId, hours, role });
-  }
-  DB.set('assigns', assigns);
+  const hours=Number(document.getElementById('qa-hours').value), role=document.getElementById('qa-role').value;
+  if (!hours||hours<=0) { alert('工数を入力してください'); return; }
+  const proj=DB.get('projects').find(p=>p.id===qaProjectId);
+  const assigns=DB.get('assigns');
+  const ex=assigns.find(a=>a.projectId===qaProjectId&&a.engineerId===qaEngineerId);
+  const weeklyHours={};
+  if (proj&&proj.startDate&&proj.endDate) getWeeksBetween(proj.startDate,proj.endDate).forEach(w=>{ weeklyHours[w]=hours; });
+  else weeklyHours[currentWeekKey()]=hours;
+  if (ex) { if(!confirm('既にアサインされています。上書きしますか？')) return; ex.weeklyHours=weeklyHours; ex.role=role; }
+  else assigns.push({id:DB.nextId('assigns'),projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours});
+  DB.set('assigns',assigns);
   closeModal('quick-assign-modal');
   renderProjects();
 }
 
 // ========== ENGINEERS ==========
-function openEngineerModal(id = null) {
-  editingEngineerId = id;
-  document.getElementById('engineer-modal-title').textContent = id ? 'エンジニア編集' : 'エンジニア登録';
-
-  if (id) {
-    const e = DB.get('engineers').find(x => x.id === id);
-    document.getElementById('e-name').value = e.name || '';
-    document.getElementById('e-type').value = e.employmentType || '正社員';
-    document.getElementById('e-available').value = e.availableHours || '';
-    document.getElementById('e-hourly').value = e.hourlyRate || '';
-    document.getElementById('e-monthly').value = e.monthlyRate || '';
-    document.getElementById('e-skills').value = e.skills || '';
-    document.getElementById('e-notes').value = e.notes || '';
-  } else {
-    ['e-name','e-available','e-hourly','e-monthly','e-skills','e-notes'].forEach(f => { document.getElementById(f).value = ''; });
-    document.getElementById('e-type').selectedIndex = 0;
-  }
+function updateMonthlyCalc() {
+  const h=Number(document.getElementById('e-hourly').value)||0;
+  const w=Number(document.getElementById('e-available').value)||0;
+  const m=h*w*4;
+  document.getElementById('e-monthly-calc').textContent=m>0?`${m.toLocaleString()}円/月（約${(m/10000).toFixed(1)}万円）`:'—';
+}
+function openEngineerModal(id=null) {
+  editingEngineerId=id;
+  document.getElementById('engineer-modal-title').textContent=id?'エンジニア編集':'エンジニア登録';
+  const e=id?DB.get('engineers').find(x=>x.id===id):null;
+  document.getElementById('e-name').value=e?.name||'';
+  document.getElementById('e-type').value=e?.employmentType||'正社員・契約社員・パートタイム';
+  document.getElementById('e-available').value=e?.availableHours||'';
+  document.getElementById('e-hourly').value=e?.hourlyRate||'';
+  document.getElementById('e-notes').value=e?.notes||'';
+  buildSkillRows('e-domain-skills', DOMAINS, e?.domainSkills||{}, '');
+  buildSkillRows('e-main-skills', SKILLS, e?.mainSkills||{}, '');
+  updateMonthlyCalc();
   openModal('engineer-modal');
 }
-
 function saveEngineer() {
-  const name = document.getElementById('e-name').value.trim();
-  const available = document.getElementById('e-available').value;
+  const name=document.getElementById('e-name').value.trim();
+  const available=document.getElementById('e-available').value;
   if (!name) { alert('氏名を入力してください'); return; }
   if (!available) { alert('稼働可能工数を入力してください'); return; }
-
-  const engineers = DB.get('engineers');
-  const data = {
-    name,
-    employmentType: document.getElementById('e-type').value,
-    availableHours: Number(available),
-    hourlyRate: document.getElementById('e-hourly').value,
-    monthlyRate: document.getElementById('e-monthly').value,
-    skills: document.getElementById('e-skills').value,
-    notes: document.getElementById('e-notes').value,
+  const engineers=DB.get('engineers');
+  const data={
+    name, employmentType:document.getElementById('e-type').value,
+    availableHours:Number(available), hourlyRate:document.getElementById('e-hourly').value,
+    domainSkills:collectSkills('e-domain-skills'), mainSkills:collectSkills('e-main-skills'),
+    notes:document.getElementById('e-notes').value,
   };
-
-  if (editingEngineerId) {
-    const idx = engineers.findIndex(x => x.id === editingEngineerId);
-    engineers[idx] = { ...engineers[idx], ...data };
-  } else {
-    data.id = DB.nextId('engineers');
-    engineers.push(data);
-  }
-  DB.set('engineers', engineers);
+  if (editingEngineerId) { const idx=engineers.findIndex(x=>x.id===editingEngineerId); engineers[idx]={...engineers[idx],...data}; }
+  else { data.id=DB.nextId('engineers'); engineers.push(data); }
+  DB.set('engineers',engineers);
   closeModal('engineer-modal');
   renderEngineers();
 }
-
 function deleteEngineer(id) {
-  if (!confirm('このエンジニアを削除しますか？\nアサイン情報も削除されます。')) return;
-  DB.set('engineers', DB.get('engineers').filter(e => e.id !== id));
-  DB.set('assigns', DB.get('assigns').filter(a => a.engineerId !== id));
+  if (!confirm('このエンジニアを削除しますか？アサイン情報も削除されます。')) return;
+  DB.set('engineers',DB.get('engineers').filter(e=>e.id!==id));
+  DB.set('assigns',DB.get('assigns').filter(a=>a.engineerId!==id));
   renderEngineers();
 }
-
 function renderEngineers() {
-  const grid = document.getElementById('engineers-grid');
-  const search = document.getElementById('engineer-search').value.toLowerCase();
-  const typeFilter = document.getElementById('engineer-type-filter').value;
-  let engineers = DB.get('engineers');
-
-  if (search) engineers = engineers.filter(e =>
-    e.name.toLowerCase().includes(search) || (e.skills || '').toLowerCase().includes(search));
-  if (typeFilter) engineers = engineers.filter(e => e.employmentType === typeFilter);
-
-  if (engineers.length === 0) {
-    grid.innerHTML = `<div class="card" style="grid-column:1/-1"><div class="empty-state">
-      <div class="empty-state-icon">👥</div>
-      <div class="empty-state-text">エンジニアが登録されていません</div>
-      <div class="empty-state-sub">「新規エンジニア登録」から追加してください</div>
-    </div></div>`;
-    return;
-  }
-
-  const assigns = DB.get('assigns');
-  const projects = DB.get('projects');
-
-  grid.innerHTML = engineers.map(e => {
-    const assignedHours = assigns.filter(a => a.engineerId === e.id).reduce((sum, a) => sum + Number(a.hours), 0);
-    const available = e.availableHours || 0;
-    const wClass = workloadClass(assignedHours, available);
-    const ratio = available > 0 ? Math.min(assignedHours / available, 1.2) : 0;
-    const barWidth = Math.min(ratio * 100, 100);
-    const isOver = assignedHours > available;
-    const utilizationPct = available > 0 ? Math.round(assignedHours / available * 100) : 0;
-
-    const engAssigns = assigns.filter(a => a.engineerId === e.id);
-    const assignHTML = engAssigns.length > 0
-      ? engAssigns.map(a => {
-          const proj = projects.find(p => p.id === a.projectId);
-          if (!proj) return '';
-          const roleLabel = a.role ? `<span style="font-size:11px;color:var(--gray-400);margin-left:4px">[${a.role}]</span>` : '';
-          return `<div class="assign-item">
-            <span class="assign-item-name">📋 ${proj.name}${roleLabel}</span>
-            <span class="assign-item-hours">${a.hours}h/週</span>
-          </div>`;
-        }).join('')
-      : '<div class="text-muted text-sm">アサイン案件なし</div>';
-
-    const employTypeBadge = { '正社員': '#dbeafe|#1e40af', '業務委託': '#d1fae5|#065f46', 'パート・アルバイト': '#fef3c7|#92400e', 'その他': '#f3f4f6|#4b5563' }[e.employmentType] || '#f3f4f6|#4b5563';
-    const [eBg, eColor] = employTypeBadge.split('|');
-
-    return `<div class="card${isOver ? ' card-over' : ''}">
+  const grid=document.getElementById('engineers-grid');
+  const search=document.getElementById('engineer-search').value.toLowerCase();
+  const tf=document.getElementById('engineer-type-filter').value;
+  let engineers=DB.get('engineers');
+  if (search) engineers=engineers.filter(e=>e.name.toLowerCase().includes(search)||(e.skills||'').toLowerCase().includes(search)||Object.keys(e.domainSkills||{}).some(k=>k.toLowerCase().includes(search))||Object.keys(e.mainSkills||{}).some(k=>k.toLowerCase().includes(search)));
+  if (tf) engineers=engineers.filter(e=>e.employmentType===tf);
+  if (!engineers.length) { grid.innerHTML=`<div class="card" style="grid-column:1/-1"><div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-text">エンジニアが登録されていません</div></div></div>`; return; }
+  const assigns=DB.get('assigns'), projects=DB.get('projects'), wk=currentWeekKey();
+  grid.innerHTML=engineers.map(e=>{
+    const asgn=getEngineerWeekAssigned(e.id,wk,assigns), avl=Number(e.availableHours||0);
+    const isOver=asgn>avl, wClass=workloadClass(asgn,avl), ratio=avl>0?Math.min(asgn/avl,1.2):0;
+    const barW=Math.min(ratio*100,100), pct=avl>0?Math.round(asgn/avl*100):0;
+    const monthly=(Number(e.hourlyRate)||0)*(Number(e.availableHours)||0)*4;
+    const eAssigns=assigns.filter(a=>a.engineerId===e.id);
+    const assignHTML=eAssigns.length?eAssigns.map(a=>{
+      const proj=projects.find(p=>p.id===a.projectId); if(!proj)return'';
+      const h=getAssignWeekHours(a,wk);
+      return `<div class="assign-item"><span class="assign-item-name">📋 ${esc(proj.name)}${a.role?` <span style="font-size:10px;color:var(--gray-400)">[${esc(a.role)}]</span>`:''}</span><span class="assign-item-hours">${h}h/週</span></div>`;
+    }).join(''):'<div class="text-muted text-sm">アサイン案件なし</div>';
+    const typColors={'正社員・契約社員・パートタイム':'#dbeafe|#1e40af','派遣社員':'#fef3c7|#92400e','業務委託':'#d1fae5|#065f46','その他':'#f3f4f6|#4b5563'};
+    const [eBg,eC]=(typColors[e.employmentType]||'#f3f4f6|#4b5563').split('|');
+    return `<div class="card${isOver?' card-over':''}">
       <div class="card-header">
         <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
-            <span style="font-size:15px;font-weight:700;color:var(--gray-900)">👤 ${e.name}</span>
-            <span class="badge" style="background:${eBg};color:${eColor}">${e.employmentType}</span>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px">
+            <span style="font-size:15px;font-weight:700">👤 ${esc(e.name)}</span>
+            <span class="badge" style="background:${eBg};color:${eC}">${esc(e.employmentType)}</span>
           </div>
-          <div style="font-size:12px;color:var(--gray-500)">稼働可能: ${available}h/週</div>
+          <div style="font-size:12px;color:var(--gray-500)">稼働可能: ${avl}h/週${monthly?' / 月額: '+(monthly/10000).toFixed(1)+'万円':''}</div>
         </div>
         <div class="actions" style="flex-shrink:0">
           <button class="btn btn-secondary btn-sm" onclick="openEngineerModal(${e.id})">編集</button>
@@ -1269,191 +1121,258 @@ function renderEngineers() {
         </div>
       </div>
       <div class="card-body">
-        ${e.skills ? `<div style="margin-bottom:12px"><div class="info-label" style="margin-bottom:4px">スキル・得意技術</div><div class="tags">${tagsHTML(e.skills)}</div></div>` : ''}
-
-        <div class="info-grid" style="margin-bottom:12px">
-          <div class="info-item"><span class="info-label">アサイン済み</span><span class="info-value">${assignedHours}h/週</span></div>
-          <div class="info-item"><span class="info-label">空き工数</span><span class="info-value" style="color:${available - assignedHours > 0 ? 'var(--success)' : 'var(--danger)'}">${Math.max(0, available - assignedHours)}h/週</span></div>
-          <div class="info-item"><span class="info-label">稼働率</span><span class="info-value">${utilizationPct}%</span></div>
-          ${e.hourlyRate ? `<div class="info-item"><span class="info-label">時給</span><span class="info-value">${formatNum(e.hourlyRate, '円')}</span></div>` : ''}
-          ${e.monthlyRate ? `<div class="info-item"><span class="info-label">月額単価</span><span class="info-value">${formatNum(e.monthlyRate, '万円')}</span></div>` : ''}
+        <div style="margin-bottom:10px"><div class="info-label" style="margin-bottom:4px">スキル・得意技術</div><div class="tags">${skillTagsHTML(e.domainSkills,e.mainSkills,e.skills)}</div></div>
+        <div class="info-grid" style="margin-bottom:10px">
+          <div class="info-item"><span class="info-label">今週アサイン済み</span><span class="info-value">${asgn}h/週</span></div>
+          <div class="info-item"><span class="info-label">空き工数</span><span class="info-value" style="color:${avl-asgn>0?'var(--success)':'var(--danger)'}">${Math.max(0,avl-asgn)}h/週</span></div>
+          <div class="info-item"><span class="info-label">稼働率（今週）</span><span class="info-value">${pct}%</span></div>
         </div>
-
-        <div style="margin-bottom:12px">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="margin-bottom:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
             <span class="info-label">稼働状況</span>
-            ${isOver ? `<span class="badge chip-ng" style="font-size:11px">⚠ 超過</span>` : `<span class="badge chip-ok" style="font-size:11px">✓ 正常</span>`}
+            ${isOver?`<span class="badge chip-ng" style="font-size:10px">⚠超過</span>`:`<span class="badge chip-ok" style="font-size:10px">✓正常</span>`}
           </div>
-          <div class="${wClass} progress-wrap">
-            <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${barWidth}%"></div></div>
-            <span class="progress-label">${assignedHours} / ${available}h</span>
-          </div>
+          <div class="${wClass} progress-wrap"><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${barW}%"></div></div><span class="progress-label">${asgn}/${avl}h</span></div>
         </div>
-
-        <div>
-          <div class="info-label" style="margin-bottom:6px">アサイン案件</div>
-          <div class="assign-list">${assignHTML}</div>
-        </div>
-
-        ${e.notes ? `<div style="margin-top:10px;padding:8px 10px;background:var(--gray-50);border-radius:6px;font-size:12px;color:var(--gray-600)">${e.notes}</div>` : ''}
+        <div><div class="info-label" style="margin-bottom:5px">アサイン案件（今週）</div><div class="assign-list">${assignHTML}</div></div>
+        ${e.notes?`<div style="margin-top:10px;padding:7px 10px;background:var(--gray-50);border-radius:6px;font-size:12px;color:var(--gray-600)">${esc(e.notes)}</div>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
 // ========== ASSIGNS ==========
-let assignAxis = 'project'; // 'project' | 'engineer'
+let assignAxis='project';
 
-function setAxis(axis) {
-  assignAxis = axis;
-  document.getElementById('axis-btn-project').classList.toggle('active', axis === 'project');
-  document.getElementById('axis-btn-engineer').classList.toggle('active', axis === 'engineer');
+function setAxis(ax) {
+  assignAxis=ax;
+  document.getElementById('axis-btn-project').classList.toggle('active',ax==='project');
+  document.getElementById('axis-btn-engineer').classList.toggle('active',ax==='engineer');
   renderAssignTable();
 }
 
-function refreshAssignSelects() {
-  const projects = DB.get('projects');
-  const engineers = DB.get('engineers');
-  const ps = document.getElementById('assign-project-select');
-  const es = document.getElementById('assign-engineer-select');
-  ps.innerHTML = '<option value="">案件を選択...</option>' +
-    projects.map(p => `<option value="${p.id}">${p.name} (${p.client})</option>`).join('');
-  es.innerHTML = '<option value="">エンジニアを選択...</option>' +
-    engineers.map(e => `<option value="${e.id}">${e.name} (${e.availableHours}h/週可)</option>`).join('');
+function openAssignModal(id=null) {
+  editingAssignId=id;
+  document.getElementById('assign-modal-title').textContent=id?'アサイン編集':'アサイン登録';
+  // Populate selects
+  const projects=DB.get('projects'), engineers=DB.get('engineers');
+  document.getElementById('a-project').innerHTML='<option value="">案件を選択...</option>'+projects.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+  document.getElementById('a-engineer').innerHTML='<option value="">エンジニアを選択...</option>'+engineers.map(e=>`<option value="${e.id}">${esc(e.name)} (${e.availableHours}h/週)</option>`).join('');
+  const weekOpts=generateWeekOptions('');
+  document.getElementById('a-start-week').innerHTML=weekOpts;
+  document.getElementById('a-end-week').innerHTML=weekOpts;
+  document.getElementById('a-default-hours').value='';
+  document.getElementById('a-per-week').checked=false;
+  document.getElementById('a-week-table-wrap').style.display='none';
+  document.getElementById('a-week-rows').innerHTML='';
+  if (id) {
+    const a=DB.get('assigns').find(x=>x.id===id);
+    if (a) {
+      document.getElementById('a-project').value=a.projectId;
+      document.getElementById('a-engineer').value=a.engineerId;
+      document.getElementById('a-role').value=a.role||'エンジニア';
+      const keys=Object.keys(a.weeklyHours||{}).sort();
+      if (keys.length) {
+        document.getElementById('a-start-week').innerHTML=generateWeekOptions(keys[0]);
+        document.getElementById('a-end-week').innerHTML=generateWeekOptions(keys[keys.length-1]);
+        const vals=Object.values(a.weeklyHours);
+        const mn=Math.min(...vals),mx=Math.max(...vals);
+        document.getElementById('a-default-hours').value=mn;
+        if (mn!==mx) {
+          document.getElementById('a-per-week').checked=true;
+          updateAssignWeekTable(a.weeklyHours);
+        }
+      }
+    }
+  }
+  openModal('assign-modal');
 }
 
-function addAssign() {
-  const projectId = Number(document.getElementById('assign-project-select').value);
-  const engineerId = Number(document.getElementById('assign-engineer-select').value);
-  const hours = Number(document.getElementById('assign-hours').value);
-  const role = document.getElementById('assign-role').value;
-
-  if (!projectId) { alert('案件を選択してください'); return; }
-  if (!engineerId) { alert('エンジニアを選択してください'); return; }
-  if (!hours || hours <= 0) { alert('週次稼働工数を入力してください'); return; }
-
-  const assigns = DB.get('assigns');
-  const existing = assigns.find(a => a.projectId === projectId && a.engineerId === engineerId);
-  if (existing) {
-    if (!confirm('このエンジニアはすでにこの案件にアサインされています。\n工数・役割を上書きしますか？')) return;
-    existing.hours = hours;
-    existing.role = role;
+function updateAssignWeekTable(existingMap) {
+  const startKey=document.getElementById('a-start-week').value;
+  const endKey=document.getElementById('a-end-week').value;
+  const perWeek=document.getElementById('a-per-week').checked;
+  const wrap=document.getElementById('a-week-table-wrap');
+  if (!perWeek||!startKey||!endKey||startKey>endKey) { wrap.style.display='none'; return; }
+  wrap.style.display='block';
+  const defH=document.getElementById('a-default-hours').value;
+  const weeks=getWeeksBetween(startKey,endKey);
+  document.getElementById('a-week-rows').innerHTML=weeks.map(w=>{
+    const v=existingMap&&existingMap[w]!==undefined?existingMap[w]:(defH||'');
+    return `<div class="week-row"><span class="week-label">${formatWeekLabel(w)}</span><div class="week-input-wrap"><input type="number" class="asgn-week-input" data-week="${w}" min="0" value="${v}" placeholder="0"><span class="week-unit">h/週</span></div></div>`;
+  }).join('');
+}
+function onDefaultHoursChange() {
+  const defH=document.getElementById('a-default-hours').value;
+  document.querySelectorAll('.asgn-week-input').forEach(i=>{ if(!i.value||i.value==='0') i.value=defH; });
+}
+function collectAssignWeekHours() {
+  const sk=document.getElementById('a-start-week').value, ek=document.getElementById('a-end-week').value;
+  const defH=Number(document.getElementById('a-default-hours').value)||0, perWeek=document.getElementById('a-per-week').checked;
+  if (!sk||!ek) return {};
+  const weeks=getWeeksBetween(sk,ek), map={};
+  if (perWeek) { document.querySelectorAll('.asgn-week-input').forEach(i=>{ map[i.dataset.week]=Number(i.value)||0; }); }
+  else { weeks.forEach(w=>{ map[w]=defH; }); }
+  return map;
+}
+function saveAssign() {
+  const pid=Number(document.getElementById('a-project').value);
+  const eid=Number(document.getElementById('a-engineer').value);
+  const role=document.getElementById('a-role').value;
+  const sk=document.getElementById('a-start-week').value, ek=document.getElementById('a-end-week').value;
+  const defH=Number(document.getElementById('a-default-hours').value)||0;
+  if (!pid) { alert('案件を選択してください'); return; }
+  if (!eid) { alert('エンジニアを選択してください'); return; }
+  if (!sk||!ek) { alert('開始週・終了週を選択してください'); return; }
+  if (!defH) { alert('工数を入力してください'); return; }
+  if (sk>ek) { alert('終了週は開始週以降を選択してください'); return; }
+  const weeklyHours=collectAssignWeekHours();
+  const assigns=DB.get('assigns');
+  if (editingAssignId) {
+    const idx=assigns.findIndex(x=>x.id===editingAssignId);
+    assigns[idx]={...assigns[idx],projectId:pid,engineerId:eid,role,weeklyHours};
   } else {
-    assigns.push({ id: DB.nextId('assigns'), projectId, engineerId, hours, role });
+    const ex=assigns.find(a=>a.projectId===pid&&a.engineerId===eid);
+    if (ex) { if(!confirm('既にアサインされています。上書きしますか？'))return; ex.weeklyHours=weeklyHours; ex.role=role; }
+    else assigns.push({id:DB.nextId('assigns'),projectId:pid,engineerId:eid,role,weeklyHours});
   }
-  DB.set('assigns', assigns);
-  document.getElementById('assign-hours').value = '';
+  DB.set('assigns',assigns);
+  closeModal('assign-modal');
   renderAssigns();
 }
-
 function removeAssign(id) {
   if (!confirm('このアサインを解除しますか？')) return;
-  DB.set('assigns', DB.get('assigns').filter(a => a.id !== id));
+  DB.set('assigns',DB.get('assigns').filter(a=>a.id!==id));
   renderAssigns();
 }
-
 function renderAssigns() {
-  refreshAssignSelects();
-
-  const assigns = DB.get('assigns');
-  const engineers = DB.get('engineers');
-
+  const assigns=DB.get('assigns'), engineers=DB.get('engineers'), wk=currentWeekKey();
   // Workload summary
-  const summaryEl = document.getElementById('workload-summary');
-  if (engineers.length === 0) {
-    summaryEl.innerHTML = '<div class="text-muted text-sm">エンジニアが登録されていません</div>';
-  } else {
-    summaryEl.innerHTML = engineers.map(e => {
-      const assigned = assigns.filter(a => a.engineerId === e.id).reduce((s, a) => s + Number(a.hours), 0);
-      const available = e.availableHours || 0;
-      const wClass = workloadClass(assigned, available);
-      const barWidth = Math.min(available > 0 ? (assigned / available) * 100 : 0, 100);
-      const isOver = assigned > available;
-      return `<div class="workload-card${isOver ? ' card-over' : ''}">
-        <div class="workload-card-name">👤 ${e.name}</div>
-        <div class="workload-card-sub">${e.employmentType} / 稼働可能 ${available}h/週</div>
-        <div class="${wClass} progress-wrap">
-          <div class="progress-bar-bg" style="height:6px"><div class="progress-bar-fill" style="width:${barWidth}%"></div></div>
-          <span class="progress-label" style="min-width:60px">${assigned}/${available}h</span>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
+  const sumEl=document.getElementById('workload-summary');
+  sumEl.innerHTML=engineers.length?engineers.map(e=>{
+    const asgn=getEngineerWeekAssigned(e.id,wk,assigns), avl=Number(e.availableHours||0);
+    const wClass=workloadClass(asgn,avl), barW=Math.min(avl>0?(asgn/avl)*100:0,100), isOver=asgn>avl;
+    return `<div class="workload-card${isOver?' card-over':''}">
+      <div class="workload-card-name">👤 ${esc(e.name)}</div>
+      <div class="workload-card-sub">${esc(e.employmentType)} / ${avl}h/週</div>
+      <div class="${wClass} progress-wrap"><div class="progress-bar-bg" style="height:6px"><div class="progress-bar-fill" style="width:${barW}%"></div></div><span class="progress-label" style="min-width:55px">${asgn}/${avl}h</span></div>
+    </div>`;
+  }).join(''):'<div class="text-muted text-sm">エンジニアが登録されていません</div>';
   renderAssignTable();
 }
-
 function renderAssignTable() {
-  const assigns = DB.get('assigns');
-  const projects = DB.get('projects');
-  const engineers = DB.get('engineers');
-  const thead = document.getElementById('assign-thead');
-  const tbody = document.getElementById('assign-tbody');
-
-  if (assigns.length === 0) {
-    thead.innerHTML = '';
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-400)">アサインが登録されていません</td></tr>`;
-    return;
+  const assigns=DB.get('assigns'), projects=DB.get('projects'), engineers=DB.get('engineers');
+  const thead=document.getElementById('assign-thead'), tbody=document.getElementById('assign-tbody');
+  if (!assigns.length) {
+    thead.innerHTML=''; tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-400)">アサインが登録されていません</td></tr>`; return;
   }
-
-  if (assignAxis === 'project') {
-    thead.innerHTML = `<tr><th>案件名</th><th>クライアント</th><th>ステータス</th><th>エンジニア</th><th>役割</th><th>週次稼働工数</th><th>操作</th></tr>`;
-    // Group by project
-    const byProject = {};
-    assigns.forEach(a => {
-      if (!byProject[a.projectId]) byProject[a.projectId] = [];
-      byProject[a.projectId].push(a);
-    });
-    let rows = '';
-    projects.forEach(p => {
-      const pAssigns = byProject[p.id] || [];
-      if (pAssigns.length === 0) return;
-      pAssigns.forEach((a, i) => {
-        const eng = engineers.find(x => x.id === a.engineerId);
-        if (!eng) return;
-        rows += `<tr>
-          ${i === 0 ? `<td rowspan="${pAssigns.length}" style="font-weight:600;border-right:1px solid var(--gray-100)">${p.name}</td>
-          <td rowspan="${pAssigns.length}" style="border-right:1px solid var(--gray-100)">${p.client}</td>
-          <td rowspan="${pAssigns.length}" style="border-right:1px solid var(--gray-100)">${statusBadge(p.status)}</td>` : ''}
-          <td>👤 ${eng.name}</td>
-          <td>${a.role ? `<span class="badge" style="background:#eff6ff;color:#1d4ed8">${a.role}</span>` : '—'}</td>
-          <td><span style="font-weight:600;color:var(--primary)">${a.hours}</span> 時間/週</td>
-          <td><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></td>
+  if (assignAxis==='project') {
+    thead.innerHTML=`<tr><th>案件名</th><th>クライアント</th><th>ステータス</th><th>エンジニア</th><th>役割</th><th>期間 / 工数</th><th>操作</th></tr>`;
+    const byProj={};
+    assigns.forEach(a=>{ if(!byProj[a.projectId])byProj[a.projectId]=[]; byProj[a.projectId].push(a); });
+    let rows='';
+    projects.forEach(p=>{
+      const pa=byProj[p.id]||[]; if(!pa.length)return;
+      pa.forEach((a,i)=>{
+        const eng=engineers.find(x=>x.id===a.engineerId); if(!eng)return;
+        rows+=`<tr>
+          ${i===0?`<td rowspan="${pa.length}" style="font-weight:600;border-right:1px solid var(--gray-100)">${esc(p.name)}</td><td rowspan="${pa.length}">${esc(p.client)}</td><td rowspan="${pa.length}">${statusBadge(p.status)}</td>`:'' }
+          <td>👤 ${esc(eng.name)}</td>
+          <td>${a.role?`<span class="badge" style="background:#eff6ff;color:#1d4ed8">${esc(a.role)}</span>`:'—'}</td>
+          <td><div style="font-size:12px">${assignWeekRange(a.weeklyHours)}</div><div style="font-weight:600;color:var(--primary)">${summarizeWeekHours(a.weeklyHours)}</div></td>
+          <td><div class="actions"><button class="btn btn-secondary btn-sm" onclick="openAssignModal(${a.id})">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></div></td>
         </tr>`;
       });
     });
-    tbody.innerHTML = rows || `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-400)">表示データなし</td></tr>`;
+    tbody.innerHTML=rows||`<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--gray-400)">データなし</td></tr>`;
   } else {
-    // Engineer axis
-    thead.innerHTML = `<tr><th>エンジニア</th><th>雇用形態</th><th>案件名</th><th>クライアント</th><th>役割</th><th>週次稼働工数</th><th>操作</th></tr>`;
-    const byEngineer = {};
-    assigns.forEach(a => {
-      if (!byEngineer[a.engineerId]) byEngineer[a.engineerId] = [];
-      byEngineer[a.engineerId].push(a);
-    });
-    let rows = '';
-    engineers.forEach(e => {
-      const eAssigns = byEngineer[e.id] || [];
-      if (eAssigns.length === 0) return;
-      eAssigns.forEach((a, i) => {
-        const proj = projects.find(x => x.id === a.projectId);
-        if (!proj) return;
-        rows += `<tr>
-          ${i === 0 ? `<td rowspan="${eAssigns.length}" style="font-weight:600;border-right:1px solid var(--gray-100)">👤 ${e.name}</td>
-          <td rowspan="${eAssigns.length}" style="border-right:1px solid var(--gray-100)">${e.employmentType}</td>` : ''}
-          <td>${proj.name}</td>
-          <td>${proj.client}</td>
-          <td>${a.role ? `<span class="badge" style="background:#eff6ff;color:#1d4ed8">${a.role}</span>` : '—'}</td>
-          <td><span style="font-weight:600;color:var(--primary)">${a.hours}</span> 時間/週</td>
-          <td><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></td>
+    thead.innerHTML=`<tr><th>エンジニア</th><th>雇用形態</th><th>案件名</th><th>ステータス</th><th>役割</th><th>期間 / 工数</th><th>操作</th></tr>`;
+    const byEng={};
+    assigns.forEach(a=>{ if(!byEng[a.engineerId])byEng[a.engineerId]=[]; byEng[a.engineerId].push(a); });
+    let rows='';
+    engineers.forEach(e=>{
+      const ea=byEng[e.id]||[]; if(!ea.length)return;
+      ea.forEach((a,i)=>{
+        const proj=projects.find(x=>x.id===a.projectId); if(!proj)return;
+        rows+=`<tr>
+          ${i===0?`<td rowspan="${ea.length}" style="font-weight:600;border-right:1px solid var(--gray-100)">👤 ${esc(e.name)}</td><td rowspan="${ea.length}">${esc(e.employmentType)}</td>`:'' }
+          <td>${esc(proj.name)}</td>
+          <td>${statusBadge(proj.status)}</td>
+          <td>${a.role?`<span class="badge" style="background:#eff6ff;color:#1d4ed8">${esc(a.role)}</span>`:'—'}</td>
+          <td><div style="font-size:12px">${assignWeekRange(a.weeklyHours)}</div><div style="font-weight:600;color:var(--primary)">${summarizeWeekHours(a.weeklyHours)}</div></td>
+          <td><div class="actions"><button class="btn btn-secondary btn-sm" onclick="openAssignModal(${a.id})">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign(${a.id})">解除</button></div></td>
         </tr>`;
       });
     });
-    tbody.innerHTML = rows || `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-400)">表示データなし</td></tr>`;
+    tbody.innerHTML=rows||`<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--gray-400)">データなし</td></tr>`;
+  }
+}
+
+// ========== TIMELINE ==========
+let tlAxis='project';
+function setTlAxis(ax) {
+  tlAxis=ax;
+  document.getElementById('tl-axis-btn-project').classList.toggle('active',ax==='project');
+  document.getElementById('tl-axis-btn-engineer').classList.toggle('active',ax==='engineer');
+  renderTimeline();
+}
+function renderTimeline() {
+  const weeks=getTimelineWeeks(), curWk=currentWeekKey();
+  const assigns=DB.get('assigns'), projects=DB.get('projects'), engineers=DB.get('engineers');
+  const c=document.getElementById('timeline-content');
+  const headerCols=weeks.map(w=>`<th class="tl-week-th${w===curWk?' tl-current-th':''}">${formatWeekHdr(w)}<br><span style="font-size:10px;font-weight:400">(月)</span></th>`).join('');
+
+  if (tlAxis==='project') {
+    const activeProjects=projects.filter(p=>p.status!=='失注');
+    if (!activeProjects.length) { c.innerHTML='<div class="empty-state" style="padding:40px"><div class="empty-state-icon">📋</div><div class="empty-state-text">表示できる案件がありません</div></div>'; return; }
+    const rows=activeProjects.map(p=>{
+      const dataCells=weeks.map(w=>{
+        const req=getProjectWeekRequired(p,w), asgn=getProjectWeekAssigned(p.id,w,assigns);
+        const isCur=w===curWk;
+        let clr='tl-gray';
+        if (req>0||asgn>0) {
+          if (!req) clr='tl-green';
+          else { const r=asgn/req; clr=r>=1?'tl-green':r>=0.5?'tl-yellow':'tl-red'; }
+        }
+        const tip=`必要:${req}h アサイン:${asgn}h${req>0?' ('+Math.round(asgn/req*100)+'%)':''}`;
+        return `<td class="tl-cell ${clr}${isCur?' tl-current-col':''}" title="${esc(tip)}">${asgn>0?asgn+'h':'<span class="tl-zero">—</span>'}</td>`;
+      }).join('');
+      const detailCells=weeks.map(w=>{
+        const isCur=w===curWk;
+        const wa=assigns.filter(a=>a.projectId===p.id&&getAssignWeekHours(a,w)>0);
+        const tags=wa.map(a=>{ const eng=engineers.find(e=>e.id===a.engineerId); return eng?`<span class="tl-eng-tag">${esc(eng.name.split(/\s/)[0])} ${getAssignWeekHours(a,w)}h</span>`:'' }).join('');
+        return `<td class="tl-detail-cell${isCur?' tl-current-col':''}">${tags?`<div class="tl-eng-tags">${tags}</div>`:''}</td>`;
+      }).join('');
+      const reqVals=weeks.map(w=>getProjectWeekRequired(p,w)).filter(v=>v>0);
+      const reqLabel=reqVals.length?(Math.min(...reqVals)===Math.max(...reqVals)?`${reqVals[0]}h/週必要`:`${Math.min(...reqVals)}〜${Math.max(...reqVals)}h/週`):'';
+      return `<tr class="tl-project-row">
+        <td class="tl-name-cell"><div class="tl-name-cell-inner">${esc(p.name)}</div>${statusBadge(p.status)}${reqLabel?`<div class="tl-req-label">${esc(reqLabel)}</div>`:''}</td>
+        ${dataCells}
+      </tr><tr>
+        <td class="tl-detail-name"></td>${detailCells}
+      </tr>`;
+    }).join('');
+    c.innerHTML=`<div class="tl-wrap"><table class="tl-table"><thead><tr><th class="tl-name-header">案件名</th>${headerCols}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  } else {
+    if (!engineers.length) { c.innerHTML='<div class="empty-state" style="padding:40px"><div class="empty-state-icon">👥</div><div class="empty-state-text">エンジニアが登録されていません</div></div>'; return; }
+    const rows=engineers.map(e=>{
+      const avl=Number(e.availableHours||0);
+      const dataCells=weeks.map(w=>{
+        const asgn=getEngineerWeekAssigned(e.id,w,assigns), isCur=w===curWk;
+        let clr='tl-gray';
+        if (asgn>0) { const r=avl>0?asgn/avl:1; clr=r>1?'tl-red':r>=0.8?'tl-green':'tl-yellow'; }
+        const wa=assigns.filter(a=>a.engineerId===e.id&&getAssignWeekHours(a,w)>0);
+        const tip=wa.map(a=>{ const p=projects.find(x=>x.id===a.projectId); return `${p?p.name:'?'}: ${getAssignWeekHours(a,w)}h`; }).join('\n')+(avl?`\n合計: ${asgn}/${avl}h`:'');
+        return `<td class="tl-cell ${clr}${isCur?' tl-current-col':''}" title="${esc(tip)}">${asgn>0?asgn+'h':'<span class="tl-zero">—</span>'}</td>`;
+      }).join('');
+      return `<tr><td class="tl-name-cell"><div class="tl-name-cell-inner">👤 ${esc(e.name)}</div><div class="tl-req-label">${avl}h/週</div></td>${dataCells}</tr>`;
+    }).join('');
+    c.innerHTML=`<div class="tl-wrap"><table class="tl-table"><thead><tr><th class="tl-name-header">エンジニア</th>${headerCols}</tr></thead><tbody>${rows}</tbody></table></div>`;
   }
 }
 
 // ========== INIT ==========
+migrateData();
 renderDashboard();
 </script>
 </body>
