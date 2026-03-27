@@ -1096,13 +1096,14 @@ async function saveProject() {
     requiredSkills: collectSkills('p-main-skills'),
     notes: document.getElementById('p-notes').value,
   };
+  const savingProjectId=editingProjectId;  // closeModal で null になる前に退避
   closeModal('project-modal');
   showLoading('保存中...');
   try {
-    if (editingProjectId) {
-      const {error}=await sb.from('projects').update(projectToRow(data)).eq('id',editingProjectId);
+    if (savingProjectId) {
+      const {error}=await sb.from('projects').update(projectToRow(data)).eq('id',savingProjectId);
       if (error) throw error;
-      const idx=cache.projects.findIndex(x=>x.id===editingProjectId);
+      const idx=cache.projects.findIndex(x=>x.id===savingProjectId);
       if (idx>=0) cache.projects[idx]={...cache.projects[idx],...data};
     } else {
       const {data:row,error}=await sb.from('projects').insert(projectToRow(data)).select('id').single();
@@ -1308,13 +1309,14 @@ async function saveEngineer() {
     domainSkills:collectSkills('e-domain-skills'), mainSkills:collectSkills('e-main-skills'),
     notes:document.getElementById('e-notes').value,
   };
+  const savingEngineerId=editingEngineerId;  // closeModal で null になる前に退避
   closeModal('engineer-modal');
   showLoading('保存中...');
   try {
-    if (editingEngineerId) {
-      const {error}=await sb.from('engineers').update(engineerToRow(data)).eq('id',editingEngineerId);
+    if (savingEngineerId) {
+      const {error}=await sb.from('engineers').update(engineerToRow(data)).eq('id',savingEngineerId);
       if (error) throw error;
-      const idx=cache.engineers.findIndex(x=>x.id===editingEngineerId);
+      const idx=cache.engineers.findIndex(x=>x.id===savingEngineerId);
       if (idx>=0) cache.engineers[idx]={...cache.engineers[idx],...data};
     } else {
       const {data:row,error}=await sb.from('engineers').insert(engineerToRow(data)).select('id').single();
@@ -1481,13 +1483,14 @@ async function saveAssign() {
   if (!defH) { alert('工数を入力してください'); return; }
   if (sk>ek) { alert('終了週は開始週以降を選択してください'); return; }
   const weeklyHours=collectAssignWeekHours();
+  const savingAssignId=editingAssignId;  // closeModal で null になる前に退避
   closeModal('assign-modal');
   showLoading('保存中...');
   try {
-    if (editingAssignId) {
-      const {error}=await sb.from('assignments').update({project_id:pid,engineer_id:eid,role,weekly_hours:weeklyHours}).eq('id',editingAssignId);
+    if (savingAssignId) {
+      const {error}=await sb.from('assignments').update({project_id:pid,engineer_id:eid,role,weekly_hours:weeklyHours}).eq('id',savingAssignId);
       if (error) throw error;
-      const idx=cache.assigns.findIndex(x=>x.id===editingAssignId);
+      const idx=cache.assigns.findIndex(x=>x.id===savingAssignId);
       if (idx>=0) cache.assigns[idx]={...cache.assigns[idx],projectId:pid,engineerId:eid,role,weeklyHours};
     } else {
       const ex=cache.assigns.find(a=>a.projectId===pid&&a.engineerId===eid);
