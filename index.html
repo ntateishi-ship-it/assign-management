@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>アサイン管理 | キビテク</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
   :root {
     --primary: #1a56db; --primary-dark: #1e429f;
@@ -586,6 +586,10 @@ const SKILLS = ['分散コンピューティング（ROSなど）','シーケン
 const LEVELS = ['G1','G2','G3','G4','G5'];
 
 // ========== SUPABASE ==========
+if (!window.supabase) {
+  document.body.innerHTML = '<div style="padding:2rem;font-family:sans-serif;color:#c81e1e;"><h2>⚠ Supabaseライブラリの読み込みに失敗しました</h2><p>インターネット接続を確認してページを再読み込みしてください。</p><p style="color:#6b7280;font-size:0.85rem;">原因: CDN (cdn.jsdelivr.net) からのスクリプト読み込みに失敗しました。</p></div>';
+  throw new Error('window.supabase is undefined - CDN script failed to load');
+}
 const SUPABASE_URL = 'https://iazqnnpfvuklyzxrtqrl.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhenFubnBmdnVrbHl6eHJ0cXJsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1MTcxOTUsImV4cCI6MjA5MDA5MzE5NX0.pwhMORHwk8P70M3OfTEn2sra08EPBMAXDaIBkaiu8lc';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
