@@ -20,3 +20,28 @@
 ## Supabase接続情報
 - URL：https://iazqnnpfvuklyzxrtqrl.supabase.co
 - テーブル：engineers / projects / assignments
+## 既知のバグ・修正履歴
+- 2026/03/27 アサイン登録でUUID型変換バグを修正（Number()削除）
+- 2026/03/27 node_modulesをgit管理から除外（.gitignore追加）
+- 2026/03/28 Supabase CDN URLを正しいパスに修正
+- 2026/03/28 JavaScriptをapp.jsに分離（index.htmlから切り出し）
+
+## 今後の改修予定
+- 案件登録フォームから売上項目を削除
+- デザイン変更（Qibitechロゴ・緑カラーテーマへ）
+- Vercelへの移行
+- 個人アカウント付与・権限設計（管理者/マネージャー/本人）
+- GoogleアカウントSSO対応
+- パスワード変更機能の追加
+
+## ローカル確認方法
+- file://では動かないためnpx serve .でlocalhost:3000を使う
+- GitHub Pages反映はgit push origin masterで自動
+
+## 注意事項
+- index.htmlとapp.jsの2ファイル構成を維持する
+- Supabase UUIDは文字列のまま扱う（Number()変換しない）
+
+## 本番URL
+- Vercel（正式）：https://assign-management.vercel.app
+- GitHub Pages：https://ntateishi-ship-it.github.io/assign-management/
