@@ -681,11 +681,12 @@ function openQuickAssign(pid,eid,eName) {
   document.getElementById('qa-title').textContent=`アサイン登録 — ${eName}`;
   document.getElementById('qa-info').innerHTML=`👤 <strong>${esc(eName)}</strong> を 📋 <strong>${p?esc(p.name):''}</strong> にアサイン`;
   document.getElementById('qa-hours').value='';
+  setRoleValue('qa-role','qa-role-other','EG');
   closeModal('candidate-modal');
   openModal('quick-assign-modal');
 }
 async function confirmQuickAssign() {
-  const hours=Number(document.getElementById('qa-hours').value), role=document.getElementById('qa-role').value;
+  const hours=Number(document.getElementById('qa-hours').value), role=getRoleValue('qa-role','qa-role-other');
   if (!hours||hours<=0) { alert('工数を入力してください'); return; }
   const proj=cache.projects.find(p=>p.id===qaProjectId);
   const weeklyHours={};
@@ -840,6 +841,27 @@ function setAxis(ax) {
   renderAssignTable();
 }
 
+const ROLE_OPTIONS = ['EG','WebEG','MechatroEG','UM','EM','PM','QA','その他'];
+function onRoleChange(selectId, otherId) {
+  document.getElementById(otherId).style.display =
+    document.getElementById(selectId).value === 'その他' ? '' : 'none';
+}
+function getRoleValue(selectId, otherId) {
+  const sel = document.getElementById(selectId).value;
+  if (sel === 'その他') return document.getElementById(otherId).value.trim() || 'その他';
+  return sel;
+}
+function setRoleValue(selectId, otherId, role) {
+  if (ROLE_OPTIONS.includes(role)) {
+    document.getElementById(selectId).value = role;
+    document.getElementById(otherId).style.display = 'none';
+  } else {
+    document.getElementById(selectId).value = 'その他';
+    document.getElementById(otherId).value = role || '';
+    document.getElementById(otherId).style.display = '';
+  }
+}
+
 function openAssignModal(id=null) {
   editingAssignId=id;
   document.getElementById('assign-modal-title').textContent=id?'アサイン編集':'アサイン登録';
@@ -854,12 +876,13 @@ function openAssignModal(id=null) {
   document.getElementById('a-per-week').checked=false;
   document.getElementById('a-week-table-wrap').style.display='none';
   document.getElementById('a-week-rows').innerHTML='';
+  setRoleValue('a-role','a-role-other','EG');
   if (id) {
     const a=cache.assigns.find(x=>x.id===id);
     if (a) {
       document.getElementById('a-project').value=a.projectId;
       document.getElementById('a-engineer').value=a.engineerId;
-      document.getElementById('a-role').value=a.role||'エンジニア';
+      setRoleValue('a-role','a-role-other',a.role||'EG');
       const keys=Object.keys(a.weeklyHours||{}).sort();
       if (keys.length) {
         document.getElementById('a-start-week').innerHTML=generateWeekOptions(keys[0]);
@@ -907,7 +930,7 @@ function collectAssignWeekHours() {
 async function saveAssign() {
   const pid=document.getElementById('a-project').value;
   const eid=document.getElementById('a-engineer').value;
-  const role=document.getElementById('a-role').value;
+  const role=getRoleValue('a-role','a-role-other');
   const sk=document.getElementById('a-start-week').value, ek=document.getElementById('a-end-week').value;
   const defH=Number(document.getElementById('a-default-hours').value)||0;
   if (!pid) { alert('案件を選択してください'); return; }
