@@ -156,15 +156,17 @@ function projectToRow(p) {
   };
 }
 
-// assignments: { id, engineer_id, project_id, role, weekly_hours(jsonb) }
+// assignments: { id, engineer_id, project_id, role, weekly_hours(jsonb), status }
 //   weekly_hours jsonb 構造: { "YYYY-MM-DD": 時間数 }
+//   status: 'confirmed' | 'tentative' | 'candidate'
 function rowToAssign(r) {
   return {
     id: r.id,
     projectId: r.project_id,
     engineerId: r.engineer_id,
     role: r.role || '',
-    weeklyHours: r.weekly_hours || {}
+    weeklyHours: r.weekly_hours || {},
+    status: r.status || 'confirmed'
   };
 }
 function assignToRow(a) {
@@ -172,7 +174,8 @@ function assignToRow(a) {
     project_id: a.projectId,
     engineer_id: a.engineerId,
     role: a.role || '',
-    weekly_hours: a.weeklyHours || {}
+    weekly_hours: a.weeklyHours || {},
+    status: a.status || 'confirmed'
   };
 }
 
@@ -227,6 +230,17 @@ function escJs(s) { return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'"); 
 function statusBadge(s) {
   const m={'受注済み':'badge-juchu','受注見込み':'badge-mikomi','提案中':'badge-teian','失注':'badge-shisshu'};
   return `<span class="badge ${m[s]||''}">${esc(s)}</span>`;
+}
+function assignStatusBadge(status) {
+  const s = status || 'confirmed';
+  if (s === 'tentative') return '<span class="badge badge-assign-tentative">内定</span>';
+  if (s === 'candidate') return '<span class="badge badge-assign-candidate">検討中</span>';
+  return '<span class="badge badge-assign-confirmed">確定</span>';
+}
+function assignStatusLabel(status) {
+  if (status === 'tentative') return '内定';
+  if (status === 'candidate') return '検討中';
+  return '確定';
 }
 function fmtDate(d) { return d ? d.replace(/-/g,'/') : '—'; }
 function fmtNum(n, sfx='') { return (n===''||n==null) ? '—' : Number(n).toLocaleString()+sfx; }
@@ -423,7 +437,7 @@ function collectProjectWeekHours() {
 
 // ========== DASHBOARD ==========
 function renderDashboard() {
-  const projects=cache.projects, engineers=cache.engineers, assigns=cache.assigns;
+  const projects=cache.projects, engineers=cache.engineers, assigns=filteredAssigns();
   const wk=currentWeekKey();
   const juchu=projects.filter(p=>p.status==='受注済み');
   const mikomi=projects.filter(p=>p.status==='受注見込み');
@@ -687,6 +701,7 @@ function openQuickAssign(pid,eid,eName) {
 }
 async function confirmQuickAssign() {
   const hours=Number(document.getElementById('qa-hours').value), role=getRoleValue('qa-role','qa-role-other');
+  const status=document.getElementById('qa-status').value||'confirmed';
   if (!hours||hours<=0) { alert('工数を入力してください'); return; }
   const proj=cache.projects.find(p=>p.id===qaProjectId);
   const weeklyHours={};
@@ -698,13 +713,13 @@ async function confirmQuickAssign() {
   try {
     if (ex) {
       if (!confirm('既にアサインされています。上書きしますか？')) { hideLoading(); return; }
-      const {error}=await sb.from('assignments').update({weekly_hours:weeklyHours,role}).eq('id',ex.id);
+      const {error}=await sb.from('assignments').update({weekly_hours:weeklyHours,role,status}).eq('id',ex.id);
       if (error) throw error;
-      ex.weeklyHours=weeklyHours; ex.role=role;
+      ex.weeklyHours=weeklyHours; ex.role=role; ex.status=status;
     } else {
-      const {data:row,error}=await sb.from('assignments').insert(assignToRow({projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours})).select('id').single();
+      const {data:row,error}=await sb.from('assignments').insert(assignToRow({projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours,status})).select('id').single();
       if (error) throw error;
-      cache.assigns.push({id:row.id,projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours});
+      cache.assigns.push({id:row.id,projectId:qaProjectId,engineerId:qaEngineerId,role,weeklyHours,status});
     }
   } catch(e) { showError('アサインの保存に失敗しました: '+(e.message||e)); }
   finally { hideLoading(); }
@@ -833,6 +848,27 @@ function renderEngineers() {
 
 // ========== ASSIGNS ==========
 let assignAxis='project';
+let aggregateMode='confirmed_tentative';
+
+function filteredAssigns() {
+  return cache.assigns.filter(a => {
+    const s = a.status || 'confirmed';
+    if (aggregateMode === 'confirmed_only') return s === 'confirmed';
+    if (aggregateMode === 'confirmed_tentative') return s === 'confirmed' || s === 'tentative';
+    return true;
+  });
+}
+
+function setAggregateMode(mode) {
+  aggregateMode = mode;
+  document.querySelectorAll('.agg-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mode === mode);
+  });
+  const activeTab = document.querySelector('.view.active')?.id?.replace('view-','');
+  if (activeTab === 'dashboard') renderDashboard();
+  else if (activeTab === 'timeline') renderTimeline();
+  else if (activeTab === 'assigns') renderAssigns();
+}
 
 function setAxis(ax) {
   assignAxis=ax;
@@ -876,6 +912,7 @@ function openAssignModal(id=null) {
   document.getElementById('a-per-week').checked=false;
   document.getElementById('a-week-table-wrap').style.display='none';
   document.getElementById('a-week-rows').innerHTML='';
+  document.getElementById('a-status').value='confirmed';
   setRoleValue('a-role','a-role-other','EG');
   if (id) {
     const a=cache.assigns.find(x=>x.id===id);
@@ -883,6 +920,7 @@ function openAssignModal(id=null) {
       document.getElementById('a-project').value=a.projectId;
       document.getElementById('a-engineer').value=a.engineerId;
       setRoleValue('a-role','a-role-other',a.role||'EG');
+      document.getElementById('a-status').value=a.status||'confirmed';
       const keys=Object.keys(a.weeklyHours||{}).sort();
       if (keys.length) {
         document.getElementById('a-start-week').innerHTML=generateWeekOptions(keys[0]);
@@ -939,26 +977,27 @@ async function saveAssign() {
   if (!defH) { alert('工数を入力してください'); return; }
   if (sk>ek) { alert('終了週は開始週以降を選択してください'); return; }
   const weeklyHours=collectAssignWeekHours();
+  const status=document.getElementById('a-status').value||'confirmed';
   const savingAssignId=editingAssignId;  // closeModal で null になる前に退避
   closeModal('assign-modal');
   showLoading('保存中...');
   try {
     if (savingAssignId) {
-      const {error}=await sb.from('assignments').update({project_id:pid,engineer_id:eid,role,weekly_hours:weeklyHours}).eq('id',savingAssignId);
+      const {error}=await sb.from('assignments').update({project_id:pid,engineer_id:eid,role,weekly_hours:weeklyHours,status}).eq('id',savingAssignId);
       if (error) throw error;
       const idx=cache.assigns.findIndex(x=>x.id===savingAssignId);
-      if (idx>=0) cache.assigns[idx]={...cache.assigns[idx],projectId:pid,engineerId:eid,role,weeklyHours};
+      if (idx>=0) cache.assigns[idx]={...cache.assigns[idx],projectId:pid,engineerId:eid,role,weeklyHours,status};
     } else {
       const ex=cache.assigns.find(a=>a.projectId===pid&&a.engineerId===eid);
       if (ex) {
         if (!confirm('既にアサインされています。上書きしますか？')) { hideLoading(); return; }
-        const {error}=await sb.from('assignments').update({role,weekly_hours:weeklyHours}).eq('id',ex.id);
+        const {error}=await sb.from('assignments').update({role,weekly_hours:weeklyHours,status}).eq('id',ex.id);
         if (error) throw error;
-        ex.weeklyHours=weeklyHours; ex.role=role;
+        ex.weeklyHours=weeklyHours; ex.role=role; ex.status=status;
       } else {
-        const {data:row,error}=await sb.from('assignments').insert(assignToRow({projectId:pid,engineerId:eid,role,weeklyHours})).select('id').single();
+        const {data:row,error}=await sb.from('assignments').insert(assignToRow({projectId:pid,engineerId:eid,role,weeklyHours,status})).select('id').single();
         if (error) throw error;
-        cache.assigns.push({id:row.id,projectId:pid,engineerId:eid,role,weeklyHours});
+        cache.assigns.push({id:row.id,projectId:pid,engineerId:eid,role,weeklyHours,status});
       }
     }
   } catch(e) { showError('アサインの保存に失敗しました: '+(e.message||e)); }
@@ -977,7 +1016,7 @@ async function removeAssign(id) {
   renderAssigns();
 }
 function renderAssigns() {
-  const assigns=cache.assigns, engineers=cache.engineers, wk=currentWeekKey();
+  const assigns=filteredAssigns(), engineers=cache.engineers, wk=currentWeekKey();
   // Workload summary
   const sumEl=document.getElementById('workload-summary');
   sumEl.innerHTML=engineers.length?engineers.map(e=>{
@@ -995,10 +1034,10 @@ function renderAssignTable() {
   const assigns=cache.assigns, projects=cache.projects, engineers=cache.engineers;
   const thead=document.getElementById('assign-thead'), tbody=document.getElementById('assign-tbody');
   if (!assigns.length) {
-    thead.innerHTML=''; tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--gray-400)">アサインが登録されていません</td></tr>`; return;
+    thead.innerHTML=''; tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--gray-400)">アサインが登録されていません</td></tr>`; return;
   }
   if (assignAxis==='project') {
-    thead.innerHTML=`<tr><th>案件名</th><th>クライアント</th><th>ステータス</th><th>エンジニア</th><th>役割</th><th>期間 / 工数</th><th>操作</th></tr>`;
+    thead.innerHTML=`<tr><th>案件名</th><th>クライアント</th><th>ステータス</th><th>エンジニア</th><th>役割</th><th>アサインST</th><th>期間 / 工数</th><th>操作</th></tr>`;
     const byProj={};
     assigns.forEach(a=>{ if(!byProj[a.projectId])byProj[a.projectId]=[]; byProj[a.projectId].push(a); });
     let rows='';
@@ -1010,14 +1049,15 @@ function renderAssignTable() {
           ${i===0?`<td rowspan="${pa.length}" style="font-weight:600;border-right:1px solid var(--gray-100)">${esc(p.name)}</td><td rowspan="${pa.length}">${esc(p.client)}</td><td rowspan="${pa.length}">${statusBadge(p.status)}</td>`:'' }
           <td>👤 ${esc(eng.name)}</td>
           <td>${a.role?`<span class="badge" style="background:#E8F5E9;color:#2E7D32">${esc(a.role)}</span>`:'—'}</td>
+          <td>${assignStatusBadge(a.status)}</td>
           <td><div style="font-size:12px">${assignWeekRange(a.weeklyHours)}</div><div style="font-weight:600;color:var(--primary)">${summarizeWeekHours(a.weeklyHours)}</div></td>
           <td><div class="actions admin-only"><button class="btn btn-secondary btn-sm" onclick="openAssignModal('${a.id}')">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign('${a.id}')">解除</button></div></td>
         </tr>`;
       });
     });
-    tbody.innerHTML=rows||`<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--gray-400)">データなし</td></tr>`;
+    tbody.innerHTML=rows||`<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gray-400)">データなし</td></tr>`;
   } else {
-    thead.innerHTML=`<tr><th>エンジニア</th><th>雇用形態</th><th>案件名</th><th>ステータス</th><th>役割</th><th>期間 / 工数</th><th>操作</th></tr>`;
+    thead.innerHTML=`<tr><th>エンジニア</th><th>雇用形態</th><th>案件名</th><th>ステータス</th><th>役割</th><th>アサインST</th><th>期間 / 工数</th><th>操作</th></tr>`;
     const byEng={};
     assigns.forEach(a=>{ if(!byEng[a.engineerId])byEng[a.engineerId]=[]; byEng[a.engineerId].push(a); });
     let rows='';
@@ -1030,12 +1070,13 @@ function renderAssignTable() {
           <td>${esc(proj.name)}</td>
           <td>${statusBadge(proj.status)}</td>
           <td>${a.role?`<span class="badge" style="background:#E8F5E9;color:#2E7D32">${esc(a.role)}</span>`:'—'}</td>
+          <td>${assignStatusBadge(a.status)}</td>
           <td><div style="font-size:12px">${assignWeekRange(a.weeklyHours)}</div><div style="font-weight:600;color:var(--primary)">${summarizeWeekHours(a.weeklyHours)}</div></td>
           <td><div class="actions admin-only"><button class="btn btn-secondary btn-sm" onclick="openAssignModal('${a.id}')">編集</button><button class="btn btn-danger btn-sm" onclick="removeAssign('${a.id}')">解除</button></div></td>
         </tr>`;
       });
     });
-    tbody.innerHTML=rows||`<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--gray-400)">データなし</td></tr>`;
+    tbody.innerHTML=rows||`<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--gray-400)">データなし</td></tr>`;
   }
 }
 
@@ -1049,16 +1090,24 @@ function setTlAxis(ax) {
 }
 function renderTimeline() {
   const weeks=getTimelineWeeks(), curWk=currentWeekKey();
-  const assigns=cache.assigns, projects=cache.projects, engineers=cache.engineers;
+  const filteredAsgns=filteredAssigns(); // 集計対象（フィルター後）
+  const allAsgns=cache.assigns; // 詳細タグ表示用（全件）
+  const projects=cache.projects, engineers=cache.engineers;
   const c=document.getElementById('timeline-content');
   const headerCols=weeks.map(w=>`<th class="tl-week-th${w===curWk?' tl-current-th':''}">${formatWeekHdr(w)}<br><span style="font-size:10px;font-weight:400">(月)</span></th>`).join('');
+
+  function tlStatusTagClass(status) {
+    if (status==='tentative') return 'tl-eng-tag tl-eng-tag-tentative';
+    if (status==='candidate') return 'tl-eng-tag tl-eng-tag-candidate';
+    return 'tl-eng-tag tl-eng-tag-confirmed';
+  }
 
   if (tlAxis==='project') {
     const activeProjects=projects.filter(p=>p.status!=='失注');
     if (!activeProjects.length) { c.innerHTML='<div class="empty-state" style="padding:40px"><div class="empty-state-icon">📋</div><div class="empty-state-text">表示できる案件がありません</div></div>'; return; }
     const rows=activeProjects.map(p=>{
       const dataCells=weeks.map(w=>{
-        const req=getProjectWeekRequired(p,w), asgn=getProjectWeekAssigned(p.id,w,assigns);
+        const req=getProjectWeekRequired(p,w), asgn=getProjectWeekAssigned(p.id,w,filteredAsgns);
         const isCur=w===curWk;
         let clr='tl-gray';
         if (req>0||asgn>0) {
@@ -1070,8 +1119,8 @@ function renderTimeline() {
       }).join('');
       const detailCells=weeks.map(w=>{
         const isCur=w===curWk;
-        const wa=assigns.filter(a=>a.projectId===p.id&&getAssignWeekHours(a,w)>0);
-        const tags=wa.map(a=>{ const eng=engineers.find(e=>e.id===a.engineerId); return eng?`<span class="tl-eng-tag">${esc(eng.name.split(/\s/)[0])} ${getAssignWeekHours(a,w)}h</span>`:'' }).join('');
+        const wa=allAsgns.filter(a=>a.projectId===p.id&&getAssignWeekHours(a,w)>0);
+        const tags=wa.map(a=>{ const eng=engineers.find(e=>e.id===a.engineerId); return eng?`<span class="${tlStatusTagClass(a.status)}">${esc(eng.name.split(/\s/)[0])} ${getAssignWeekHours(a,w)}h</span>`:'' }).join('');
         return `<td class="tl-detail-cell${isCur?' tl-current-col':''}">${tags?`<div class="tl-eng-tags">${tags}</div>`:''}</td>`;
       }).join('');
       const reqVals=weeks.map(w=>getProjectWeekRequired(p,w)).filter(v=>v>0);
@@ -1089,11 +1138,12 @@ function renderTimeline() {
     const rows=engineers.map(e=>{
       const avl=Number(e.availableHours||0);
       const dataCells=weeks.map(w=>{
-        const asgn=getEngineerWeekAssigned(e.id,w,assigns), isCur=w===curWk;
+        const asgn=getEngineerWeekAssigned(e.id,w,filteredAsgns), isCur=w===curWk;
         let clr='tl-gray';
         if (asgn>0) { const r=avl>0?asgn/avl:1; clr=r>1?'tl-red':r>=0.8?'tl-green':'tl-yellow'; }
-        const wa=assigns.filter(a=>a.engineerId===e.id&&getAssignWeekHours(a,w)>0);
-        const tip=wa.map(a=>{ const p=projects.find(x=>x.id===a.projectId); return `${p?p.name:'?'}: ${getAssignWeekHours(a,w)}h`; }).join('\n')+(avl?`\n合計: ${asgn}/${avl}h`:'');
+        const wa=allAsgns.filter(a=>a.engineerId===e.id&&getAssignWeekHours(a,w)>0);
+        const tip=wa.map(a=>{ const p=projects.find(x=>x.id===a.projectId); return `${p?p.name:'?'}: ${getAssignWeekHours(a,w)}h [${assignStatusLabel(a.status)}]`; }).join('\n')+(avl?`\n合計: ${asgn}/${avl}h`:'');
+        const tags=wa.map(a=>{ const p=projects.find(x=>x.id===a.projectId); return p?`<span class="${tlStatusTagClass(a.status)}">${esc(p.name.slice(0,6))} ${getAssignWeekHours(a,w)}h</span>`:'' }).join('');
         return `<td class="tl-cell ${clr}${isCur?' tl-current-col':''}" title="${esc(tip)}">${asgn>0?asgn+'h':'<span class="tl-zero">—</span>'}</td>`;
       }).join('');
       return `<tr><td class="tl-name-cell"><div class="tl-name-cell-inner">👤 ${esc(e.name)}</div><div class="tl-req-label">${avl}h/週</div></td>${dataCells}</tr>`;
